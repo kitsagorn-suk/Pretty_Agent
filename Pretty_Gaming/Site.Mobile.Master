@@ -1,0 +1,764 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.Mobile.master.cs" Inherits="Pretty_Gaming.Site_Mobile" %>
+<%@ Register Src="~/ViewSwitcher.ascx" TagPrefix="friendlyUrls" TagName="ViewSwitcher" %>
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head runat="server">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=1480" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Agent Pretty Gaming</title>
+    <link rel="icon" href="img/logoTab.png" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="css/mdb.min.css" rel="stylesheet">
+    <!-- Your custom styles (optional) -->
+    <link href="css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/jquery-ui.css">
+    <link rel="stylesheet" href="css/pagination.css">
+    <link rel="stylesheet" href="css/bootstrap-datepicker3.css" />
+    <link rel="stylesheet" href="css/marquee.css" />
+    <link href="css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+</head>
+<body class="fixed-sn">
+    <div id="myModalLoad" class="modal" data-backdrop="static" data-keyboard="false" style="z-index: 9999">
+        <div class="d-flex justify-content-center" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #CFA137 !important;">
+            <div class="spinner-border" role="status" style="width: 7rem; height: 7rem; font-size: 4rem;">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+    </div>
+    <form runat="server">
+        <div class="wrapper container">
+            <header>
+                <!-- Header navigation -->
+                <nav class="navbar navbar-light white p-0 fixed-top">
+                    <a class="navbar-brand logo">
+                        <img src="../img/logo.png" id="imgLogin">
+                    </a>
+                    <div class="navbar-panel-box">
+                        <div class="navbar-panel d-flex justify-content-between">
+                            <div class="d-flex align-items-center nav-top" style="margin-left: 10px;">
+                                <div class="row">
+                                    <a class="nav-link overflow ellipsis" aria-expanded="false" id="nameLogin" href="/Menu_Account/profile.aspx">
+                                        <i class="far fa-user-circle"></i>
+                                    </a>
+                                    <a class="nav-link" aria-expanded="false" id="position" style="margin-left: 1rem;">
+                                        <i class="far fa-user-circle"></i>
+                                    </a>
+                                    <a class="nav-link" aria-expanded="false" id="balance" style="margin-left: 1rem;">
+                                        <i class="far fa-user-circle"></i>
+                                    </a>
+                                    <a class="nav-link" aria-expanded="false" id="timezone" style="margin-left: 1rem;">
+                                        <i class="far fa-clock"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center nav-top-links">
+                                <a <%--onclick="ModalLanguage();" --%>id="txtLan">
+                                    <img src="../img/Flag/usa.png" style="width: 20px; margin-right: .4rem;" />English
+                                </a>
+                                <div id="divblock" style="display: none;">
+                                    <div style="border-bottom: 1px #ddd solid; padding: 3px;">
+                                        <a onclick="SetLanguage('Thai');">
+                                            <img src="../img/Flag/thailand.png" style="width: 20px;" />&emsp;ไทย
+                                        </a>
+                                    </div>
+                                    <div style="border-bottom: 1px #ddd solid; padding: 3px;">
+                                        <a onclick="SetLanguage('English');">
+                                            <img src="../img/Flag/usa.png" style="width: 20px;" />&emsp;English
+                                        </a>
+                                    </div>
+                                    <div style="padding: 3px;">
+                                        <a onclick="SetLanguage('Chinese');">
+                                            <img src="../img/Flag/china.png" style="width: 20px;" />&emsp;中文
+                                        </a>
+                                    </div>
+                                </div>
+                                <a href="#" class="nav-link" set-lan="html:Guide"></a>
+                                <a href="#" class="nav-link" set-lan="html:Mobile Version"></a>
+                                <a class="nav-link" set-lan="html:Log Out" onclick="LogOut();"></a>
+                            </div>
+                        </div>
+                        <div class="simple-marquee-container">
+                            <marquee class="marqueetxt" style="color: #fff; padding-top: 3px;"></marquee>
+                            <%--<div class="marquee">
+                                <ul class="marquee-content-items">
+                                </ul>
+                            </div>--%>
+                        </div>
+                    </div>
+                </nav>
+                <!--/. Header navigation -->
+                <!-- Sidebar navigation -->
+                <div id="slide-out" class="side-nav white fixed wide side-nav-light z-depth-0">
+                    <ul class="custom-scrollbar_">
+                        <!-- Side navigation links -->
+                        <li>
+                            <ul class="accordion collapsible collapsible-accordion">
+                                <li id="menuDashboard" class="menuMain">
+                                    <a href="/Menu_Dashboard/dashboard.aspx" class="collapsible-header waves-effect"><i class="sv-slim-icon fas fa-dashboard"></i>
+                                        <label set-lan="text:Dashboard" class="main"></label>
+                                    </a>
+                                </li>
+                                <li id="menuAccount" class="menuMain">
+                                    <a class="collapsible-header waves-effect arrow-r">
+                                        <i class="sv-slim-icon fas fa-member"></i>
+                                        <label set-lan="text:Account" class="main"></label>
+                                        <i class="fas fa-angle-down rotate-icon"></i>
+                                    </a>
+                                    <div class="collapsible-body">
+                                        <ul>
+                                            <li id="menuProfile"><a href="/Menu_Account/profile.aspx" class="waves-effect">
+                                                <span class="sv-normal submain" set-lan="text:Profile"></span></a>
+                                            </li>
+                                            <li id="menuPassword"><a href="/Menu_Account/password_change.aspx" class="waves-effect">
+                                                <span class="sv-normal submain" set-lan="text:Password"></span></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li id="menuMemberManage" class="menuMain">
+                                    <a class="collapsible-header waves-effect arrow-r">
+                                        <i class="sv-slim-icon fas fa-member"></i>
+                                        <label set-lan="text:Member Mngement" class="main"></label>
+                                        <i class="fas fa-angle-down rotate-icon"></i>
+                                    </a>
+                                    <div class="collapsible-body">
+                                        <ul>
+                                            <li id="menuAddShareholder"><a href="/Menu_MemberManagement/shareholder_add.aspx" class="waves-effect">
+                                                <span class="sv-normal submain" set-lan="text:Add Shareholder"></span></a>
+                                            </li>
+                                            <li id="menuShareholder"><a href="/Menu_MemberManagement/shareholder.aspx" class="waves-effect">
+                                                <span class="sv-normal submain" set-lan="text:Shareholder"></span></a>
+                                            </li>
+
+                                            <li id="menuAddMember"><a href="/Menu_MemberManagement/member_agent_add_member_credit.aspx" class="waves-effect">
+                                                <span class="sv-normal submain" set-lan="text:Add Member"></span></a>
+                                            </li>
+                                            <li id="menuAddAgent"><a href="/Menu_MemberManagement/agent_add.aspx" class="waves-effect">
+                                                <span class="sv-normal submain" set-lan="text:Add Agent"></span></a>
+                                            </li>
+                                            <li id="menuMembersandAgent"><a href="/Menu_MemberManagement/member_and_agent_management.aspx" class="waves-effect">
+                                                <span class="sv-normal submain" set-lan="text:Members & Agents"></span></a>
+                                            </li>
+
+                                            <li id="menuAddSubAccounts"><a href="/Menu_MemberManagement/sub_accounts_add.aspx" class="waves-effect">
+                                                <span class="sv-normal submain" set-lan="text:Add Sub Account"></span></a>
+                                            </li>
+                                            <li id="menuSubAccounts"><a href="/Menu_MemberManagement/sub_accounts.aspx" class="waves-effect">
+                                                <span class="sv-normal submain" set-lan="text:Sub Accounts"></span></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li id="menuStockManage" class="menuMain">
+                                    <a class="collapsible-header waves-effect arrow-r">
+                                        <i class="sv-slim-icon far fa-report"></i>
+                                        <label set-lan="text:Stock Mngement" class="main"></label>
+                                        <i class="fas fa-angle-down rotate-icon"></i>
+                                    </a>
+                                    <div class="collapsible-body">
+                                        <ul>
+                                            <li id="menuMemberOut"><a href="/Menu_StockManagement/member_outstanding.aspx" class="waves-effect">
+                                                <span class="sv-normal submain" set-lan="text:Member Outstanding"></span></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li id="menuReport" class="menuMain">
+                                    <a class="collapsible-header waves-effect arrow-r">
+                                        <i class="sv-slim-icon far fa-report"></i>
+                                        <label set-lan="text:Report" class="main"></label>
+                                        <i class="fas fa-angle-down rotate-icon"></i>
+                                    </a>
+                                    <div class="collapsible-body">
+                                        <ul>
+                                            <li id="menuWLMember"><a href="/Menu_Report/wl_member.aspx" class="waves-effect">
+                                                <span class="sv-normal submain" set-lan="text:W/L Member"></span></a>
+                                            </li>
+                                            <li id="menuWLCompany"><a href="/Menu_Report/wl_company.aspx" class="waves-effect">
+                                                <span class="sv-normal submain" set-lan="text:W/L Company"></span></a>
+                                            </li>
+                                            <li id="menuTipDealer" style="display: none;"><a href="/Menu_Report/tip_dealer.aspx" class="waves-effect">
+                                                <span class="sv-normal submain" set-lan="text:Tip Dealer"></span></a>
+                                            </li>
+                                            <%--<li id="menuWLMemberVer1"><a href="/Menu_Report/wl_member_ver1.aspx" class="waves-effect">
+                                                <span class="sv-normal submain">W/L Member Ver 1</span></a>
+                                            </li>--%>
+                                            <%--<li id="menuWLMGMember" style="display: none;"><a href="/Menu_Report/wl_mg_member.aspx" class="waves-effect">
+                                                <span class="sv-normal submain" set-lan="text:W/L Member MongoDB"></span></a>
+                                            </li>--%>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li id="menuPayment" class="menuMain">
+                                    <a class="collapsible-header waves-effect arrow-r">
+                                        <i class="sv-slim-icon fas fa-payment"></i>
+                                        <label set-lan="text:Payment" class="main"></label>
+                                        <i class="fas fa-angle-down rotate-icon"></i>
+                                    </a>
+                                    <div class="collapsible-body">
+                                        <ul>
+                                            <li id="menuTransfer"><a href="/Menu_Payment/transfer.aspx" class="waves-effect">
+                                                <span class="sv-normal submain" set-lan="text:Deposit / Withdrawal"></span></a>
+                                            </li>
+                                            <li id="menuTransferHis"><a href="/Menu_Payment/statement.aspx" class="waves-effect">
+                                                <span class="sv-normal submain" set-lan="text:Statement"></span></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li id="menuAnnouncement" style="display: none;" class="menuMain">
+                                    <a class="collapsible-header waves-effect arrow-r">
+                                        <i class="sv-slim-icon far fa-settings"></i>
+                                        <label set-lan="text:Announcements" class="main"></label>
+                                        <i class="fas fa-angle-down rotate-icon"></i>
+                                    </a>
+                                    <div class="collapsible-body">
+                                        <ul>
+                                            <li id="menuAnnounceMessage"><a href="/Menu_Settings/announcements.aspx" class="waves-effect">
+                                                <span class="sv-normal submain" set-lan="text:Message"></span></a>
+                                            </li>
+                                            <li id="menuAnnounceBanner"><a href="/Menu_Settings/announcementsBanner.aspx" class="waves-effect">
+                                                <span class="sv-normal submain" set-lan="text:Banner"></span></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li id="menuSeamlessAPI" style="display: none;" class="menuMain">
+                                    <a class="collapsible-header waves-effect arrow-r">
+                                        <i class="sv-slim-icon far fa-report"></i>
+                                        <label set-lan="text:Seamless API" class="main"></label>
+                                        <i class="fas fa-angle-down rotate-icon"></i>
+                                    </a>
+                                    <div class="collapsible-body">
+                                        <ul>
+                                            <%--<li id="menuUserPlaceBet"><a href="/Menu_SeamlessAPI/user_place_bet.aspx" class="waves-effect">
+                                                <span class="sv-normal submain" set-lan="text:User Place Bet"></span></a>
+                                            </li>--%>
+                                            <li id="menuUserPlaceBetCancel"><a href="/Menu_SeamlessAPI/user_place_bet_cancel.aspx" class="waves-effect">
+                                                <span class="sv-normal submain" set-lan="text:User Place Bet Cancel"></span></a>
+                                            </li>
+                                            <li id="menuUserUserPlacePayout"><a href="/Menu_SeamlessAPI/user_plac_payout.aspx" class="waves-effect">
+                                                <span class="sv-normal submain" set-lan="text:User Place Payout"></span></a>
+                                            </li>
+                                            <%--<li id="menuRecalculate"><a href="/Menu_SeamlessAPI/recalculate.aspx" class="waves-effect">
+                                                <span class="sv-normal submain" set-lan="text:Recalculate"></span></a>
+                                            </li>--%>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li id="menuRate" style="display: none;" class="menuMain">
+                                    <a href="/Menu_Rate/Rate.aspx" class="collapsible-header waves-effect"><i class="sv-slim-icon far fa-payout-rates"></i>
+                                        <label set-lan="text:Rate" class="main"></label>
+                                    </a>
+                                </li>
+                                <li onclick="hideOnline();">
+                                    <a id="toggle" class="waves-effect">
+                                        <span set-lan="text:Online" style="color: #fff; float: left; padding-left: 3rem;" id="txtOnlines">Online :</span><span style="color: #fff; float: left; margin-left: 5px;" id="txtOnline"></span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <!--/. Side navigation links -->
+                    </ul>
+                    <div class="sidenav-bg rgba-white-strong"></div>
+                </div>
+                <!--/. Sidebar navigation -->
+            </header>
+            <main>
+                <div class="body-content">
+                    <asp:ContentPlaceHolder ID="MainContent" runat="server">
+                    </asp:ContentPlaceHolder>
+                </div>
+            </main>
+        </div>
+    </form>
+    <!-- SCRIPTS -->
+    <!-- JQuery -->
+    <script type="text/javascript" src="../js/jquery-3.4.1.min.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript" src="../js/bootstrap.min.js"></script>
+    <!-- MDB core JavaScript -->
+    <script type="text/javascript" src="../js/mdb.min.js"></script>
+    <!-- ACE core JavaScript -->
+    <script type="text/javascript" src="../js/ace.min.js"></script>
+    <!-- Language core JavaScript -->
+    <script type="text/javascript" src="../js/language_Login.js"></script>
+    <script type="text/javascript" src="../js/bootstrap-datetimepicker.min.js"></script>
+    <script src="../js/jquery-ui.js"></script>
+    <script src="../js/jquery.star-rating-svg.js"></script>
+    <script>
+        var token;
+        var apiURL = "https://ap-southeast-api.aghippo168.com";
+        $(document).ready(function () {
+            token = localStorage.getItem("Token");
+
+            $('#divblock').hide();
+            $('#txtLan').click(function (e) {
+                e.stopPropagation();
+                $('#divblock').slideToggle();
+            });
+            $('#divblock').click(function (e) {
+                e.stopPropagation();
+            });
+            $(document).click(function () {
+                $('#divblock').slideUp();
+            });
+
+            $.ajax({
+                url: apiURL + '/apiRoute/member/profile',
+                type: 'POST',
+                headers: {
+                    "Authorization": token,
+                    "Content-Type": "application/json"
+                },
+                success: function (data) {
+                    if (data.code == null || data.code == 0) {
+                        var txtShow = "";
+                        document.getElementById('nameLogin').innerHTML = "<i class='far fa-user-circle'></i>" + data.username;
+                        $('#nameLogin').prop('title', data.username);
+
+                        if (data.position.toLowerCase() == "company") {
+                            txtShow = "Company";
+                        }
+                        else if (data.position.toLowerCase() == "b2b_sh_holder" || data.position.toLowerCase() == "b2c_sh_holder") {
+                            txtShow = "Shareholder";
+                        }
+                        else if (data.position.toLowerCase() == "agent_none_api" || data.position.toLowerCase() == "agent_api") {
+                            txtShow = "Agent";
+                        }
+                        else if (data.position.toLowerCase() == "member_none_api" || data.position.toLowerCase() == "member_api") {
+                            txtShow = "Member";
+                        }
+                        document.getElementById('position').innerHTML = "<i class='fas fa-briefcase'></i>&nbsp;<span set-lan='text:" + txtShow + "'></span>";
+
+                        document.getElementById('balance').innerHTML = "<i class='far fa-money-bill-alt'></i>&nbsp;" + data.balance.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+
+                        SetLan(localStorage.getItem("Language"));
+
+                        if (data.position.toLowerCase() == "agent_api" && data.betType.toLowerCase() == "api_seamless") {
+                            $("#menuSeamlessAPI").css("display", "block");
+                        }
+
+                        localStorage.setItem("Username", data.username);
+                        localStorage.setItem("PositionTracking", data.positionTracking);
+                        localStorage.setItem("Commission", JSON.stringify(data.commission));
+                        localStorage.setItem("Currency", data.currency);
+                        localStorage.setItem("Nickname", data.nickname);
+                        localStorage.setItem("Balance", data.balance);
+                        localStorage.setItem("Type", data.betType);
+                        localStorage.setItem("Under", data.under);
+
+                        if (data.isSupport == true) {
+                            localStorage.setItem("Status_Account", data.accessPage.access_account);
+                            localStorage.setItem("Status_Member", data.accessPage.access_member);
+                            localStorage.setItem("Status_Payment", data.accessPage.access_payment);
+                            localStorage.setItem("Status_Report", data.accessPage.access_report);
+                            localStorage.setItem("Status_Stock", data.accessPage.access_stock);
+                        }
+                    }
+                    else {
+                        window.location.href = "/Login.aspx";
+                    }
+                },
+                error: function (xhr, exception) {
+                    var msg = '';
+                    if (xhr.status === 0) {
+                        msg = 'Not connect. Verify Network.';
+                    } else if (xhr.status == 404) {
+                        msg = 'Requested page not found. [404]';
+                    } else if (xhr.status == 500) {
+                        msg = 'Internal Server Error [500].';
+                    } else if (exception === 'parsererror') {
+                        msg = 'Requested JSON parse failed.';
+                    } else if (exception === 'timeout') {
+                        msg = 'Time out error.';
+                    } else if (exception === 'abort') {
+                        msg = 'Ajax request aborted.';
+                    } else {
+                        msg = 'Uncaught Error.\n' + xhr.responseText;
+                    }
+                    document.getElementById('lbAlert').innerHTML = msg;
+                    $("#myModalLoad").modal('hide');
+                    $('#modalAlert').modal('show');
+                }
+            });
+
+            if (localStorage.getItem("Language") == "Thai") {
+                $("#txtLan").html("<img src='../img/Flag/thailand.png' style='width: 20px; margin-right: .4rem;' />ไทย");
+            }
+            else if (localStorage.getItem("Language") == "English") {
+                $("#txtLan").html("<img src='../img/Flag/usa.png' style='width: 20px; margin-right: .4rem;' />English");
+            }
+            else if (localStorage.getItem("Language") == "Chinese") {
+                $("#txtLan").html("<img src='../img/Flag/china.png' style='width: 20px; margin-right: .4rem;' />中文");
+            }
+
+            var m = new Date();
+            var dateString = m.getUTCFullYear() + "/" + (m.getUTCMonth() + 1) + "/" + m.getUTCDate() + " " + m.getUTCHours() + ":" + m.getUTCMinutes() + ":" + m.getUTCSeconds();
+            var thaiTime = m.toLocaleString("en-US", { timeZone: "Asia/Bangkok" });
+            thaiTime = new Date(thaiTime);
+            var txtthaiTime = ("0" + thaiTime.getDate()).slice(-2) + "/" + ("0" + (thaiTime.getMonth() + 1)).slice(-2) + "/" + ("0" + thaiTime.getFullYear()).slice(-2) + " " + ("0" + thaiTime.getHours()).slice(-2) + ":" + ("0" + thaiTime.getMinutes()).slice(-2) + ":" + ("0" + thaiTime.getSeconds()).slice(-2);
+            $("#timezone").html("<i class='far fa-clock'></i>&nbsp;" + txtthaiTime + " GMT+7");
+
+            var html = "";
+            $.ajax({
+                url: apiURL + '/apiRoute/agentAmnRouter/list',
+                type: 'GET',
+                headers: {
+                    "Authorization": localStorage.getItem("Token"),
+                    "Content-Type": "application/json"
+                },
+                success: function (response) {
+                    if (response.code == null || response.code == 0) {
+                        var data = response.data;
+                        if (data.length > 0) {
+                            for (var i = 0; i < data.length; i++) {
+                                var obj = data[i];
+                                html += '<span>' + obj.msg + '</span>&emsp;|&emsp;';
+                            }
+                        }
+                        else {
+                            html += '<span>We are the future of gaming.</span>';
+                        }
+
+                        $('.marqueetxt').html(html);
+                    }
+                    else {
+                        document.getElementById('lbAlert').innerHTML = data.msg;
+                        $("#myModalLoad").modal('hide');
+                        $('#modalAlert').modal('show');
+                    }
+                },
+                error: function (xhr, exception) {
+                    var msg = '';
+                    if (xhr.status === 0) {
+                        msg = 'Not connect. Verify Network.';
+                    } else if (xhr.status == 404) {
+                        msg = 'Requested page not found. [404]';
+                    } else if (xhr.status == 500) {
+                        msg = 'Internal Server Error [500].';
+                    } else if (exception === 'parsererror') {
+                        msg = 'Requested JSON parse failed.';
+                    } else if (exception === 'timeout') {
+                        msg = 'Time out error.';
+                    } else if (exception === 'abort') {
+                        msg = 'Ajax request aborted.';
+                    } else {
+                        msg = 'Uncaught Error.\n' + xhr.responseText;
+                    }
+                    document.getElementById('lbAlert').innerHTML = msg;
+                    $("#myModalLoad").modal('hide');
+                    $('#modalAlert').modal('show');
+                }
+            });
+
+            $.ajax({
+                url: apiURL + '/apiRoute/table/getUserOnline',
+                type: 'GET',
+                headers: {
+                    "Authorization": localStorage.getItem("Token"),
+                    "Content-Type": "application/json"
+                },
+                success: function (response) {
+                    if (response.code == null || response.code == 0) {
+                        var data = response.data;
+                        if (data.length > 0) {
+                            var co = 0;
+                            for (var i = 0; i < data.length; i++) {
+                                var obj = data[i].online;
+                                co = co + obj;
+                            }
+                            $('#txtOnline').text(co.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,'));
+                        }
+                        else {
+                            $('#txtOnline').text("-");
+                        }
+                    }
+                    else {
+                        document.getElementById('lbAlert').innerHTML = data.msg;
+                        $("#myModalLoad").modal('hide');
+                        $('#modalAlert').modal('show');
+                    }
+                },
+                error: function (xhr, exception) {
+                    $('#txtOnline').text("-");
+                    console.log('Uncaught Error.\n' + xhr.responseText);
+                    //var msg = '';
+                    //if (xhr.status === 0) {
+                    //    msg = 'Not connect. Verify Network.';
+                    //} else if (xhr.status == 404) {
+                    //    msg = 'Requested page not found. [404]';
+                    //} else if (xhr.status == 500) {
+                    //    msg = 'Internal Server Error [500].';
+                    //} else if (exception === 'parsererror') {
+                    //    msg = 'Requested JSON parse failed.';
+                    //} else if (exception === 'timeout') {
+                    //    msg = 'Time out error.';
+                    //} else if (exception === 'abort') {
+                    //    msg = 'Ajax request aborted.';
+                    //} else {
+                    //    msg = 'Uncaught Error.\n' + xhr.responseText;
+                    //}
+                    //document.getElementById('lbAlert').innerHTML = msg;
+                    //$("#myModalLoad").modal('hide');
+                    //$('#modalAlert').modal('show');
+                }
+            });
+
+            setInterval(function () {
+                $.ajax({
+                    url: apiURL + '/apiRoute/table/getUserOnline',
+                    type: 'GET',
+                    headers: {
+                        "Authorization": localStorage.getItem("Token"),
+                        "Content-Type": "application/json"
+                    },
+                    success: function (response) {
+                        if (response.code == null || response.code == 0) {
+                            var data = response.data;
+                            if (data.length > 0) {
+                                var co = 0;
+                                for (var i = 0; i < data.length; i++) {
+                                    var obj = data[i].online;
+                                    co = co + obj;
+                                }
+                                $('#txtOnline').text(co.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,'));
+                            }
+                            else {
+                                $('#txtOnline').text("-");
+                            }
+                        }
+                        else {
+                            document.getElementById('lbAlert').innerHTML = data.msg;
+                            $("#myModalLoad").modal('hide');
+                            $('#modalAlert').modal('show');
+                        }
+                    },
+                    error: function (xhr, exception) {
+                        $('#txtOnline').text("-");
+                        console.log('Uncaught Error.\n' + xhr.responseText);
+                        //var msg = '';
+                        //if (xhr.status === 0) {
+                        //    msg = 'Not connect. Verify Network.';
+                        //} else if (xhr.status == 404) {
+                        //    msg = 'Requested page not found. [404]';
+                        //} else if (xhr.status == 500) {
+                        //    msg = 'Internal Server Error [500].';
+                        //} else if (exception === 'parsererror') {
+                        //    msg = 'Requested JSON parse failed.';
+                        //} else if (exception === 'timeout') {
+                        //    msg = 'Time out error.';
+                        //} else if (exception === 'abort') {
+                        //    msg = 'Ajax request aborted.';
+                        //} else {
+                        //    msg = 'Uncaught Error.\n' + xhr.responseText;
+                        //}
+                        //document.getElementById('lbAlert').innerHTML = msg;
+                        //$("#myModalLoad").modal('hide');
+                        //$('#modalAlert').modal('show');
+                    }
+                });
+            }, 30 * 1000);
+
+            setInterval(function () {
+                var m = new Date();
+                var dateString = m.getUTCFullYear() + "/" + (m.getUTCMonth() + 1) + "/" + m.getUTCDate() + " " + m.getUTCHours() + ":" + m.getUTCMinutes() + ":" + m.getUTCSeconds();
+                var thaiTime = m.toLocaleString("en-US", { timeZone: "Asia/Bangkok" });
+                thaiTime = new Date(thaiTime);
+                var txtthaiTime = ("0" + thaiTime.getDate()).slice(-2) + "/" + ("0" + (thaiTime.getMonth() + 1)).slice(-2) + "/" + ("0" + thaiTime.getFullYear()).slice(-2) + " " + ("0" + thaiTime.getHours()).slice(-2) + ":" + ("0" + thaiTime.getMinutes()).slice(-2) + ":" + ("0" + thaiTime.getSeconds()).slice(-2);
+                $("#timezone").html("<i class='far fa-clock'></i>&nbsp;" + txtthaiTime + " GMT+7");
+            }, 1000);
+
+            setInterval(function () {
+                $.ajax({
+                    url: apiURL + '/apiRoute/member/profile',
+                    type: 'POST',
+                    headers: {
+                        "Authorization": token,
+                        "Content-Type": "application/json"
+                    },
+                    success: function (data) {
+                        if (data.code != null && data.code != 0) {
+                            window.location.href = "/Login.aspx";
+                        }
+                    },
+                    error: function (xhr, exception) {
+                        console.log('Uncaught Error.\n' + xhr.responseText);
+                        //var msg = '';
+                        //if (xhr.status === 0) {
+                        //    msg = 'Not connect. Verify Network.';
+                        //} else if (xhr.status == 404) {
+                        //    msg = 'Requested page not found. [404]';
+                        //} else if (xhr.status == 500) {
+                        //    msg = 'Internal Server Error [500].';
+                        //} else if (exception === 'parsererror') {
+                        //    msg = 'Requested JSON parse failed.';
+                        //} else if (exception === 'timeout') {
+                        //    msg = 'Time out error.';
+                        //} else if (exception === 'abort') {
+                        //    msg = 'Ajax request aborted.';
+                        //} else {
+                        //    msg = 'Uncaught Error.\n' + xhr.responseText;
+                        //}
+                        //document.getElementById('lbAlert').innerHTML = msg;
+                        //$("#myModalLoad").modal('hide');
+                        //$('#modalAlert').modal('show');
+                    }
+                });
+            }, 60 * 1000);
+
+            if (localStorage.getItem("Position").toLowerCase() == "company") {
+                $("#menuAnnouncement, #menuSeamlessAPI, #menuRate").css("display", "block");
+                $("#menuAddMember, #menuAddAgent, #menuMembersandAgent").remove();
+            }
+            else if (localStorage.getItem("Position").toLowerCase() == "b2b_sh_holder" || localStorage.getItem("Position").toLowerCase() == "b2c_sh_holder") {
+                $("#menuAddShareholder, #menuShareholder, #menuAddMember").remove();
+            }
+            else if (localStorage.getItem("Position").toLowerCase() == "agent_none_api") {
+                $("#menuAddShareholder, #menuShareholder, #menuWLCompany").remove();
+            }
+            else if (localStorage.getItem("Position").toLowerCase() == "agent_api") {
+                $("#menuAddShareholder, #menuShareholder, #menuAddAgent, #menuAddMember, #menuWLCompany").remove();
+            }
+
+            if (localStorage.getItem("isSupport") == "true") {
+                if (localStorage.getItem("Status_Account") == "OFF") {
+                    $('#menuAccount').remove();
+                }
+
+                if (localStorage.getItem("Status_Member") == "OFF") {
+                    $('#menuMemberManage').remove();
+                }
+
+                if (localStorage.getItem("Status_Payment") == "OFF") {
+                    $('#menuPayment').remove();
+                }
+
+                if (localStorage.getItem("Status_Report") == "OFF") {
+                    $('#menuReport').remove();
+                }
+
+                if (localStorage.getItem("Status_Stock") == "OFF") {
+                    $('#menuStockManage').remove();
+                }
+
+                if (localStorage.getItem("Status_Member") == "VIEW") {
+                    $('#menuAddShareholder, #menuAddMember, #menuAddAgent').remove();
+                }
+
+                $('#menuSubAccounts , #menuAddSubAccounts').remove();
+            }
+
+            $('.menuMain').each(function (i, obj) {
+                if ($(obj).is(":hidden")) {
+                    $(obj).remove();
+                }
+            });
+
+            SetLan(localStorage.getItem("Language"));
+        });
+
+        function ModalLanguage() {
+            $("#modalLanguage").modal();
+        }
+
+        function SetLanguage(ele) {
+            SetLan(ele);
+            if (ele == "Thai") {
+                $("#txtLan").html("<img src='../img/Flag/thailand.png' style='width: 20px; margin-right: .4rem;' />ไทย");
+            }
+            else if (ele == "English") {
+                $("#txtLan").html("<img src='../img/Flag/usa.png' style='width: 20px; margin-right: .4rem;' />English");
+            }
+            else if (ele == "Chinese") {
+                $("#txtLan").html("<img src='../img/Flag/china.png' style='width: 20px; margin-right: .4rem;' />中文");
+            }
+
+            localStorage.setItem("Language", ele);
+
+            $('#divblock').slideUp();
+
+            var path = window.location.pathname;
+            var page = path.split("/").pop();
+            if (page == "dashboard") {
+                getGraph();
+            }
+        }
+
+        function LogOut() {
+            localStorage.clear();
+            window.location.href = "/Login.aspx";
+        }
+
+        function getText() {
+            console.log("Test");
+        }
+
+        var zoneonline = false;
+        function hideOnline() {
+            if (zoneonline == true) {
+                $("#txtOnline , #txtOnlines").css("display", "initial");
+                zoneonline = false;
+            }
+            else {
+                $("#txtOnline , #txtOnlines").css("display", "none");
+                zoneonline = true;
+            }
+        }
+
+        function clsAlphaNoOnly(e) {  // Accept only alpha numerics, no special characters 
+            var regex = new RegExp("^[a-zA-Z0-9]+$");
+            var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+            if (regex.test(str)) {
+                return true;
+            }
+
+            e.preventDefault();
+            return false;
+        }
+
+        function clsAlphaTHNoOnly(e) {  // Accept only alpha numerics, no special characters 
+            var regex = new RegExp("^[ก-๏a-zA-Z0-9]+$");
+            var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+            if (regex.test(str)) {
+                return true;
+            }
+
+            e.preventDefault();
+            return false;
+        }
+
+        function Comma(Num) { //function to add commas to textboxes
+            if (parseInt(Num) != 0) {
+                Num += '';
+                Num = Num.replace(',', ''); Num = Num.replace(',', ''); Num = Num.replace(',', '');
+                Num = Num.replace(',', ''); Num = Num.replace(',', ''); Num = Num.replace(',', '');
+                x = Num.split('.');
+                x1 = x[0];
+                x2 = x.length > 1 ? '.' + x[1] : '';
+                var rgx = /(\d+)(\d{3})/;
+                while (rgx.test(x1))
+                    x1 = x1.replace(rgx, '$1' + ',' + '$2');
+                return x1 + x2;
+            }
+            else {
+                return "";
+            }
+        }
+
+        function isNumberKey(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode
+            if (charCode > 31 && (charCode < 48 || charCode > 57))
+                return false;
+            return true;
+        }
+    </script>
+    <asp:ContentPlaceHolder ID="MainScript" runat="server"></asp:ContentPlaceHolder>
+</body>
+</html>
