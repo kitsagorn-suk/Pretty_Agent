@@ -204,6 +204,7 @@
     "Edit Member": "Edit Member",
     "Transaction_": "Transaction :",
     "W/L Member": "W/L Member",
+    "W/L Game ID": "W/L Game ID",
     "W/L Company": "W/L Company",
     "Valid turn": "Valid turn",
     "Amount": "Amount",
@@ -218,6 +219,7 @@
     "User": "User",
     "ID": "ID",
     "Game ID": "Game ID",
+    "Game ID_": "Game ID :",
     "Baccarat": "Baccarat",
     "tie": "tie",
     "player": "player",
@@ -345,6 +347,7 @@
     "Tip Dealer": "Tip Dealer",
     "Callback Dealer Tips": "Callback Dealer Tips",
     "Tips": "Tips",
+    "Type_": "Type :",
 };
 
 var Thai = {
@@ -552,6 +555,7 @@ var Thai = {
     "Add Banner_": "<i class='fas fa-plus mr-1'></i>เพิ่มแบนเนอร์",
     "Transaction_": "รายการเงิน :",
     "W/L Member": "แพ้ชนะสมาชิก",
+    "W/L Game ID": "แพ้ชนะเกมส์ไอดี",
     "W/L Company": "แพ้ชนะคอมพานี",
     "Valid turn": "ยอดเล่นจริง",
     "Amount": "จำนวน",
@@ -566,6 +570,7 @@ var Thai = {
     "User": "ผู้ใช้งาน",
     "ID": "ไอดี",
     "Game ID": "เกมไอดี",
+    "Game ID_": "เกมไอดี :",
     "Baccarat": "บาคาร่า",
     "tie": "เสมอ",
     "player": "เพลย์เยอร์",
@@ -694,6 +699,7 @@ var Thai = {
     "Tip Dealer": "ทิปดีลเลอร์",
     "Callback Dealer Tips": "ทิปดีลเลอร์",
     "Tips": "ทิป",
+    "Type_": "ประเภท :",
 };
 
 var Chinese = {
@@ -903,6 +909,7 @@ var Chinese = {
     "Add Banner_": "<i class='fas fa-plus mr-1'></i>加旗帜",
     "Transaction_": "交易 :",
     "W/L Member": "会员赢输报表",
+    "W/L Game ID": "W/L Game ID",
     "W/L Company": "会员赢输报表",
     "Valid turn": "有效期至",
     "Amount": "合计",
@@ -917,6 +924,7 @@ var Chinese = {
     "User": "用户名",
     "ID": "ID",
     "Game ID": "游戏 ID",
+    "Game ID_": "游戏 ID :",
     "Baccarat": "百家乐",
     "tie": "和",
     "player": "闲",
@@ -1043,6 +1051,7 @@ var Chinese = {
     "Tip Dealer": "给消费荷官",
     "Callback Dealer Tips": "回调给荷官消费提示",
     "Tips": "提示",
+    "Type_": "类型 :",
 };
 
 

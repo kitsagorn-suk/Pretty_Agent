@@ -389,6 +389,7 @@
     <Content Include="Menu_Rate\Rate.aspx" />
     <Content Include="Menu_Report\tip_dealer.aspx" />
     <Content Include="Menu_Report\wl_company.aspx" />
+    <Content Include="Menu_Report\wl_gameID.aspx" />
     <Content Include="Menu_Report\wl_member_ver1.aspx" />
     <Content Include="Menu_Report\wl_member.aspx" />
     <Content Include="Menu_Report\wl_mg_member.aspx" />
@@ -580,6 +581,13 @@
     </Compile>
     <Compile Include="Menu_Report\wl_company.aspx.designer.cs">
       <DependentUpon>wl_company.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Menu_Report\wl_gameID.aspx.cs">
+      <DependentUpon>wl_gameID.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Menu_Report\wl_gameID.aspx.designer.cs">
+      <DependentUpon>wl_gameID.aspx</DependentUpon>
     </Compile>
     <Compile Include="Menu_Report\wl_member_ver1.aspx.cs">
       <DependentUpon>wl_member_ver1.aspx</DependentUpon>
