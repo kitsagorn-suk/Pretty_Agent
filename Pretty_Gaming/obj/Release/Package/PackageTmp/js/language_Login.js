@@ -43,6 +43,7 @@
     "Dragon Tiger": "Dragon Tiger",
     "Roulete": "Roulete",
     "Sicbo": "Sicbo",
+    "Thai Fan Tan": "Thai Fan Tan",
     "Original Baccarat_": "Original Baccarat :",
     "Super6 Baccarat_": "Super6 Baccarat :",
     "Bacarrat 4 Point_": "Bacarrat 4 Point :",
@@ -204,6 +205,7 @@
     "Edit Member": "Edit Member",
     "Transaction_": "Transaction :",
     "W/L Member": "W/L Member",
+    "W/L Game ID": "W/L Game ID",
     "W/L Company": "W/L Company",
     "Valid turn": "Valid turn",
     "Amount": "Amount",
@@ -218,6 +220,7 @@
     "User": "User",
     "ID": "ID",
     "Game ID": "Game ID",
+    "Game ID_": "Game ID :",
     "Baccarat": "Baccarat",
     "tie": "tie",
     "player": "player",
@@ -345,6 +348,10 @@
     "Tip Dealer": "Tip Dealer",
     "Callback Dealer Tips": "Callback Dealer Tips",
     "Tips": "Tips",
+    "Type_": "Type :",
+    "Open": "Open",
+    "Close": "Close",
+    "Setting Baccarat": "Setting Baccarat"
 };
 
 var Thai = {
@@ -393,6 +400,7 @@ var Thai = {
     "Dragon Tiger": "เสือ มังกร",
     "Roulete": "รูเล็ท",
     "Sicbo": "ซิกโบ",
+    "Thai Fan Tan": "ถั่ว",
     "Original Baccarat_": "บาคาร่าทั่วไป :",
     "Super6 Baccarat_": "ซุปเปอร์ซิกบาคาร่า :",
     "Bacarrat 4 Point_": "บาคาร่าน้ำ4ตังค์ :",
@@ -552,6 +560,7 @@ var Thai = {
     "Add Banner_": "<i class='fas fa-plus mr-1'></i>เพิ่มแบนเนอร์",
     "Transaction_": "รายการเงิน :",
     "W/L Member": "แพ้ชนะสมาชิก",
+    "W/L Game ID": "แพ้ชนะเกมส์ไอดี",
     "W/L Company": "แพ้ชนะคอมพานี",
     "Valid turn": "ยอดเล่นจริง",
     "Amount": "จำนวน",
@@ -566,6 +575,7 @@ var Thai = {
     "User": "ผู้ใช้งาน",
     "ID": "ไอดี",
     "Game ID": "เกมไอดี",
+    "Game ID_": "เกมไอดี :",
     "Baccarat": "บาคาร่า",
     "tie": "เสมอ",
     "player": "เพลย์เยอร์",
@@ -694,6 +704,10 @@ var Thai = {
     "Tip Dealer": "ทิปดีลเลอร์",
     "Callback Dealer Tips": "ทิปดีลเลอร์",
     "Tips": "ทิป",
+    "Type_": "ประเภท :",
+    "Open": "เปิด",
+    "Close": "ปิด",
+    "Setting Baccarat": "ตั้งค่าบาคาร่า"
 };
 
 var Chinese = {
@@ -742,6 +756,7 @@ var Chinese = {
     "Dragon Tiger": "龙虎",
     "Roulete": "轮盘",
     "Sicbo": "骰宝",
+    "Thai Fan Tan": "Thai Fan Tan",
     "Original Baccarat_": "传统百家乐 :",
     "Super6 Baccarat_": "超六百家乐 :",
     "Bacarrat 4 Point_": "四点百家乐 :",
@@ -903,6 +918,7 @@ var Chinese = {
     "Add Banner_": "<i class='fas fa-plus mr-1'></i>加旗帜",
     "Transaction_": "交易 :",
     "W/L Member": "会员赢输报表",
+    "W/L Game ID": "W/L Game ID",
     "W/L Company": "会员赢输报表",
     "Valid turn": "有效期至",
     "Amount": "合计",
@@ -917,6 +933,7 @@ var Chinese = {
     "User": "用户名",
     "ID": "ID",
     "Game ID": "游戏 ID",
+    "Game ID_": "游戏 ID :",
     "Baccarat": "百家乐",
     "tie": "和",
     "player": "闲",
@@ -1043,6 +1060,10 @@ var Chinese = {
     "Tip Dealer": "给消费荷官",
     "Callback Dealer Tips": "回调给荷官消费提示",
     "Tips": "提示",
+    "Type_": "类型 :",
+    "Open": "打开",
+    "Close": "关闭",
+    "Setting Baccarat": "百家乐设置"
 };
 
 

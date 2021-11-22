@@ -183,9 +183,8 @@
                 </div>
             </div>
         </div>
-        <div class="form-row">
+        <div class="form-row" id="zoneAPI" style="display: none;">
             <div class="form-group col-5">
-                <div id="zoneAPI" style="display: none;">
                     <h4 set-lan="text:API"></h4>
                     <div class="form-group row inputform">
                         <label for="username" class="col-4 col-form-label" set-lan="text:Key"></label>
@@ -228,6 +227,129 @@
                         </div>
                         <button class="btn btn-yellow font-weight-bold" onclick="gotoURL();" type="button" style="float: right;" set-lan="text:Click to API Document"></button>
                         <button class="btn btn-yellow font-weight-bold addIP zonenone" onclick="" type="button" style="float: right; margin-right: 5px;" set-lan="text:Add IP"></button>
+                    </div>
+            </div>
+            <div class="col-1"></div>
+            <div class="form-group col-5">
+                <h4 set-lan="text:Setting Baccarat"></h4>
+                <div class="form-group row inputform">
+                    <label for="OriBar" class="col-4 col-form-label" set-lan="text:Original Baccarat"></label>
+                    <div class="col-8">
+                        <div class="row">
+                            <div class="col-8">
+                                <div class="select-outline">
+                                    <select class="mdb-select" id="ddl_OriBar">
+                                        <option value="true" set-lan="text:Open"></option>
+                                        <option value="false" set-lan="text:Close"></option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row inputform">
+                    <label for="SupBar" class="col-4 col-form-label" set-lan="text:Super6 Baccarat"></label>
+                    <div class="col-8">
+                        <div class="row">
+                            <div class="col-8">
+                                <div class="select-outline">
+                                    <select class="mdb-select" id="ddl_SupBar">
+                                        <option value="true" set-lan="text:Open"></option>
+                                        <option value="false" set-lan="text:Close"></option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row inputform">
+                    <label for="4Point" class="col-4 col-form-label" set-lan="text:Bacarrat 4 Point"></label>
+                    <div class="col-8">
+                        <div class="row">
+                            <div class="col-8">
+                                <div class="select-outline">
+                                    <select class="mdb-select" id="ddl_4Point">
+                                        <option value="true" set-lan="text:Open"></option>
+                                        <option value="false" set-lan="text:Close"></option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row inputform">
+                    <label for="CowCow" class="col-4 col-form-label" set-lan="text:Cow Cow"></label>
+                    <div class="col-8">
+                        <div class="row">
+                            <div class="col-8">
+                                <div class="select-outline">
+                                    <select class="mdb-select" id="ddl_CowCow">
+                                        <option value="true" set-lan="text:Open"></option>
+                                        <option value="false" set-lan="text:Close"></option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row inputform">
+                    <label for="DragonTiger" class="col-4 col-form-label" set-lan="text:Dragon Tiger"></label>
+                    <div class="col-8">
+                        <div class="row">
+                            <div class="col-8">
+                                <div class="select-outline">
+                                    <select class="mdb-select" id="ddl_DragonTiger">
+                                        <option value="true" set-lan="text:Open"></option>
+                                        <option value="false" set-lan="text:Close"></option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row inputform">
+                    <label for="Roulete" class="col-4 col-form-label" set-lan="text:Roulete"></label>
+                    <div class="col-8">
+                        <div class="row">
+                            <div class="col-8">
+                                <div class="select-outline">
+                                    <select class="mdb-select" id="ddl_Roulete">
+                                        <option value="true" set-lan="text:Open"></option>
+                                        <option value="false" set-lan="text:Close"></option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row inputform">
+                    <label for="Sicbo" class="col-4 col-form-label" set-lan="text:Sicbo"></label>
+                    <div class="col-8">
+                        <div class="row">
+                            <div class="col-8">
+                                <div class="select-outline">
+                                    <select class="mdb-select" id="ddl_Sicbo">
+                                        <option value="true" set-lan="text:Open"></option>
+                                        <option value="false" set-lan="text:Close"></option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row inputform">
+                    <label for="Sicbo" class="col-4 col-form-label" set-lan="text:Thai Fan Tan"></label>
+                    <div class="col-8">
+                        <div class="row">
+                            <div class="col-8">
+                                <div class="select-outline">
+                                    <select class="mdb-select" id="ddl_FanTan">
+                                        <option value="true" set-lan="text:Open"></option>
+                                        <option value="false" set-lan="text:Close"></option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -379,6 +501,17 @@
                             else if (data.betType == "API_SEAMLESS") {
                                 $('#Bettype').val("Seamless");
                             }
+
+                            $("#ddl_OriBar option[value='" + data.allowType.normalBaccarat.toString() + "']").attr("selected", "selected");
+                            $("#ddl_SupBar option[value='" + data.allowType.super6Baccarat.toString() + "']").attr("selected", "selected");
+                            $("#ddl_4Point option[value='" + data.allowType.fourPointBaccarat.toString() + "']").attr("selected", "selected");
+                            $("#ddl_CowCow option[value='" + data.allowType.cowCowBaccarat.toString() + "']").attr("selected", "selected");
+                            $("#ddl_DragonTiger option[value='" + data.allowType.dragonTiger.toString() + "']").attr("selected", "selected");
+                            $("#ddl_Roulete option[value='" + data.allowType.roulette.toString() + "']").attr("selected", "selected");
+                            $("#ddl_Sicbo option[value='" + data.allowType.sicBo.toString() + "']").attr("selected", "selected");
+                            $("#ddl_FanTan option[value='" + data.allowType.thaiFanTan.toString() + "']").attr("selected", "selected");
+
+                            $("#ddl_FanTan").val(data.allowType.thaiFanTan.toString());
                         }
 
                         if (data.position.toLowerCase() == "agent_none_api") {
@@ -573,10 +706,28 @@
                 arrIP.push(val);
             }
 
+            var cowCowBaccarat = ($('#ddl_CowCow').val().toLowerCase() === 'true');
+            var dragonTiger = ($('#ddl_DragonTiger').val().toLowerCase() === 'true');
+            var fourPointBaccarat = ($('#ddl_4Point').val().toLowerCase() === 'true');
+            var normalBaccarat = ($('#ddl_OriBar').val().toLowerCase() === 'true');
+            var roulette = ($('#ddl_Roulete').val().toLowerCase() === 'true');
+            var sicBo = ($('#ddl_Sicbo').val().toLowerCase() === 'true');
+            var super6Baccarat = ($('#ddl_SupBar').val().toLowerCase() === 'true');
+            var thaiFanTan = ($('#ddl_FanTan').val().toLowerCase() === 'true');
+
             var dataEdit = new Object();
             dataEdit.ip = arrIP;
             dataEdit.webHookEvents = $('#web').val();
-            //dataEdit.webHookEventsDealer = $('#webDealer').val();
+            dataEdit.allowType = {
+                cowCowBaccarat: cowCowBaccarat,
+                dragonTiger: dragonTiger,
+                fourPointBaccarat: fourPointBaccarat,
+                normalBaccarat: normalBaccarat,
+                roulette: roulette,
+                sicBo: sicBo,
+                super6Baccarat: super6Baccarat,
+                thaiFanTan: thaiFanTan
+            };
             $.ajax({
                 url: apiURL + "/apiRoute/member/setIpAndWebHookEvent",
                 type: 'POST',

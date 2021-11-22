@@ -112,7 +112,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/27/2012 13:00:52</publishTime>
     </File>
     <File Include="bin/Pretty_Gaming.dll">
-      <publishTime>11/11/2021 17:34:38</publishTime>
+      <publishTime>11/18/2021 14:49:02</publishTime>
     </File>
     <File Include="bin/RestSharp.dll">
       <publishTime>09/06/2012 22:37:32</publishTime>
@@ -805,7 +805,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/23/2020 14:41:23</publishTime>
     </File>
     <File Include="js/language_Login.js">
-      <publishTime>09/12/2021 00:16:10</publishTime>
+      <publishTime>11/22/2021 14:35:57</publishTime>
     </File>
     <File Include="js/marquee.js">
       <publishTime>05/12/2020 18:10:40</publishTime>
@@ -832,13 +832,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>04/21/2020 15:11:25</publishTime>
     </File>
     <File Include="Login.aspx">
-      <publishTime>09/25/2021 22:44:34</publishTime>
+      <publishTime>11/22/2021 17:47:55</publishTime>
     </File>
     <File Include="Menu_Account/password_change.aspx">
       <publishTime>07/04/2020 00:17:09</publishTime>
     </File>
     <File Include="Menu_Account/profile.aspx">
-      <publishTime>09/11/2021 23:38:58</publishTime>
+      <publishTime>11/22/2021 14:59:14</publishTime>
     </File>
     <File Include="Menu_Dashboard/dashboard.aspx">
       <publishTime>07/04/2020 00:18:49</publishTime>
@@ -900,8 +900,11 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Menu_Report/wl_company.aspx">
       <publishTime>09/25/2021 21:59:14</publishTime>
     </File>
+    <File Include="Menu_Report/wl_gameID.aspx">
+      <publishTime>11/22/2021 17:44:21</publishTime>
+    </File>
     <File Include="Menu_Report/wl_member.aspx">
-      <publishTime>11/11/2021 17:28:14</publishTime>
+      <publishTime>11/17/2021 17:23:28</publishTime>
     </File>
     <File Include="Menu_Report/wl_member_ver1.aspx">
       <publishTime>06/10/2020 01:50:37</publishTime>
@@ -1000,10 +1003,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>04/08/2020 17:14:25</publishTime>
     </File>
     <File Include="Site.Master">
-      <publishTime>09/25/2021 22:44:32</publishTime>
+      <publishTime>11/22/2021 17:47:48</publishTime>
     </File>
     <File Include="Site.Mobile.Master">
-      <publishTime>09/25/2021 22:44:30</publishTime>
+      <publishTime>11/22/2021 17:47:51</publishTime>
     </File>
     <File Include="ViewSwitcher.ascx">
       <publishTime>03/04/2020 12:47:38</publishTime>

@@ -202,7 +202,7 @@
     <script type="text/javascript" src="../js/language_Login.js"></script>
     <script type="text/javascript">
         var ipAddress;
-        var apiURL = "https://api-dev.prettygaming.asia";
+        var apiURL = "https://ap-southeast-api.aghippo168.com";
         var logLan = "English";
         var uuid = "";
         $(document).ready(function () {

@@ -43,6 +43,7 @@
     "Dragon Tiger": "Dragon Tiger",
     "Roulete": "Roulete",
     "Sicbo": "Sicbo",
+    "Thai Fan Tan": "Thai Fan Tan",
     "Original Baccarat_": "Original Baccarat :",
     "Super6 Baccarat_": "Super6 Baccarat :",
     "Bacarrat 4 Point_": "Bacarrat 4 Point :",
@@ -348,6 +349,9 @@
     "Callback Dealer Tips": "Callback Dealer Tips",
     "Tips": "Tips",
     "Type_": "Type :",
+    "Open": "Open",
+    "Close": "Close",
+    "Setting Baccarat": "Setting Baccarat"
 };
 
 var Thai = {
@@ -396,6 +400,7 @@ var Thai = {
     "Dragon Tiger": "เสือ มังกร",
     "Roulete": "รูเล็ท",
     "Sicbo": "ซิกโบ",
+    "Thai Fan Tan": "ถั่ว",
     "Original Baccarat_": "บาคาร่าทั่วไป :",
     "Super6 Baccarat_": "ซุปเปอร์ซิกบาคาร่า :",
     "Bacarrat 4 Point_": "บาคาร่าน้ำ4ตังค์ :",
@@ -700,6 +705,9 @@ var Thai = {
     "Callback Dealer Tips": "ทิปดีลเลอร์",
     "Tips": "ทิป",
     "Type_": "ประเภท :",
+    "Open": "เปิด",
+    "Close": "ปิด",
+    "Setting Baccarat": "ตั้งค่าบาคาร่า"
 };
 
 var Chinese = {
@@ -748,6 +756,7 @@ var Chinese = {
     "Dragon Tiger": "龙虎",
     "Roulete": "轮盘",
     "Sicbo": "骰宝",
+    "Thai Fan Tan": "Thai Fan Tan",
     "Original Baccarat_": "传统百家乐 :",
     "Super6 Baccarat_": "超六百家乐 :",
     "Bacarrat 4 Point_": "四点百家乐 :",
@@ -1052,6 +1061,9 @@ var Chinese = {
     "Callback Dealer Tips": "回调给荷官消费提示",
     "Tips": "提示",
     "Type_": "类型 :",
+    "Open": "打开",
+    "Close": "关闭",
+    "Setting Baccarat": "百家乐设置"
 };
 
 

@@ -297,7 +297,7 @@
     <script src="../js/jquery.star-rating-svg.js"></script>
     <script>
         var token;
-        var apiURL = "https://api-dev.prettygaming.asia";
+        var apiURL = "https://ap-southeast-api.aghippo168.com";
         $(document).ready(function () {
             token = localStorage.getItem("Token");
 

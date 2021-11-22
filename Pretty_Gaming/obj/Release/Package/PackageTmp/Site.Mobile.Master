@@ -183,6 +183,9 @@
                                             <li id="menuWLCompany"><a href="/Menu_Report/wl_company.aspx" class="waves-effect">
                                                 <span class="sv-normal submain" set-lan="text:W/L Company"></span></a>
                                             </li>
+                                            <li id="menuWLGameID"><a href="/Menu_Report/wl_gameID.aspx" class="waves-effect">
+                                                <span class="sv-normal submain" set-lan="text:W/L Game ID"></span></a>
+                                            </li>
                                             <li id="menuTipDealer" style="display: none;"><a href="/Menu_Report/tip_dealer.aspx" class="waves-effect">
                                                 <span class="sv-normal submain" set-lan="text:Tip Dealer"></span></a>
                                             </li>
