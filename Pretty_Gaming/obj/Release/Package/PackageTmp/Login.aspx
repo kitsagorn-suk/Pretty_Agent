@@ -24,26 +24,39 @@
             border-radius: 15px;
         }
 
-        #captcha::placeholder { 
-                text-align: center;
-            }
-        #captcha:-ms-input-placeholder {
-                  
-                /* Internet Explorer 10-11 */
-                text-align: center;
-            }
-            #captcha::-ms-input-placeholder { 
-                  
-                /* Microsoft Edge */
-                text-align: center;
-            }
+        #captcha::placeholder {
+            text-align: center;
+        }
 
-            .label{
-                    font-weight: 400;
-            }
+        #captcha:-ms-input-placeholder {
+            /* Internet Explorer 10-11 */
+            text-align: center;
+        }
+
+        #captcha::-ms-input-placeholder {
+            /* Microsoft Edge */
+            text-align: center;
+        }
+
+        .label {
+            font-weight: 400;
+        }
+
+        .bg {
+            background-image: url("img/Carnival/valentine.jpg");
+        }
+
+        canvas {
+            height: 100%;
+            left: 0;
+            position: absolute;
+            top: 0;
+            width: 100%;
+        }
     </style>
 </head>
 <body class="login-page">
+    <canvas></canvas>
     <div id="myModalLoad" class="modal" data-backdrop="static" data-keyboard="false">
         <div class="d-flex justify-content-center" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #CFA137 !important;">
             <div class="spinner-border" role="status" style="width: 10rem; height: 10rem; font-size: 5rem;">
@@ -51,7 +64,7 @@
             </div>
         </div>
     </div>
-    <form runat="server" class="login-page">
+    <form runat="server" class="login-page bg">
         <div class="wrapper container h-100 d-flex justify-content-center align-items-center">
             <div class="login-section">
                 <div class="card">
@@ -109,13 +122,13 @@
                                 <div class="captcha">
                                     <img id="imgCaptcha" style="width: 200px; padding-top: 10px;">
                                 </div>
-                                <a onclick="captcha()" style="padding-left: 10px;"><i class="fas fa-redo" style="margin: auto; padding:5px; background-color: #fff; border-radius: 11px;"></i></a>
+                                <a onclick="captcha()" style="padding-left: 10px;"><i class="fas fa-redo" style="margin: auto; padding: 5px; background-color: #fff; border-radius: 11px;"></i></a>
                             </div>
                             <div class="form-group mb-3" style="width: 223px; padding-left: 12px;">
-                                    <div class="md-form md-outline">
-                                        <input type="text" id="captcha" class="form-control form-control-lg mb-0" autocomplete="off" style="text-align: center; width: 223px;" placeholder="Captcha"/>
-                                        <%--<label for="captcha" class="label" set-lan="html:Captcha">Captcha</label>--%>
-                                    </div>
+                                <div class="md-form md-outline">
+                                    <input type="text" id="captcha" class="form-control form-control-lg mb-0" autocomplete="off" style="text-align: center; width: 223px;" placeholder="Captcha" />
+                                    <%--<label for="captcha" class="label" set-lan="html:Captcha">Captcha</label>--%>
+                                </div>
                             </div>
                             <div class="form-group row mb-4">
                                 <div class="col-12">
@@ -206,6 +219,7 @@
         var logLan = "English";
         var uuid = "";
         $(document).ready(function () {
+            //carnival();
             captcha();
 
             $('body').on('keyup', function (evt) {
@@ -248,268 +262,373 @@
             logLan = txtLan;
         });
 
+        function carnival() {
+            'use strict'
+
+            const canvas = document.querySelector('canvas')
+            const ctx = canvas.getContext('2d')
+
+            let width, height, lastNow
+            let snowflakes
+            const maxSnowflakes = 100
+
+            function init() {
+                snowflakes = []
+                resize()
+                render(lastNow = performance.now())
+            }
+
+            function render(now) {
+                requestAnimationFrame(render)
+  
+                const elapsed = now - lastNow
+                lastNow = now
+  
+                ctx.clearRect(0, 0, width, height)
+                if (snowflakes.length < maxSnowflakes)
+                    snowflakes.push(new Snowflake())
+  
+                ctx.fillStyle = ctx.strokeStyle = '#fff'
+
+                snowflakes.forEach(snowflake => snowflake.update(elapsed, now))
+            }
+
+            function pause() {
+                cancelAnimationFrame(render)
+            }
+            function resume() {
+                lastNow = performance.now()
+                requestAnimationFrame(render)
+            }
+
+
+            class Snowflake {
+                constructor() {
+                    this.spawn()
+                }
+  
+                spawn(anyY = false) {
+                    this.x = rand(0, width)
+                    this.y = anyY === true
+                      ? rand(-50, height + 50)
+                      : rand(-50, -10)
+                    this.xVel = rand(-.05, .05)
+                    this.yVel = rand(.02, .1)
+                    this.angle = rand(0, Math.PI * 2)
+                    this.angleVel = rand(-.001, .001)
+                    this.size = rand(7, 12)
+                    this.sizeOsc = rand(.01, .5)
+                }
+  
+                    update(elapsed, now) {
+                        const xForce = rand(-.001, .001);
+
+                        if (Math.abs(this.xVel + xForce) < .075) {
+                            this.xVel += xForce
+                        }
+    
+                        this.x += this.xVel * elapsed
+                        this.y += this.yVel * elapsed
+                        this.angle += this.xVel * 0.05 * elapsed //this.angleVel * elapsed
+    
+                        if (
+                          this.y - this.size > height ||
+                          this.x + this.size < 0 ||
+                          this.x - this.size > width
+                        ) {
+                            this.spawn()
+                        }
+    
+                        this.render()
+                    }
+  
+                    render() {
+                        ctx.save()
+                        const { x, y, angle, size } = this
+                      ctx.beginPath()
+                        ctx.arc(x, y, size * 0.2, 0, Math.PI * 2, false)
+                        ctx.fill()
+                        ctx.restore()
+                    }
+                }
+
+                // Utils
+                const rand = (min, max) => min + Math.random() * (max - min)
+
+                    function resize() {
+                        width = canvas.width = window.innerWidth
+                        height = canvas.height = window.innerHeight
+                    }
+
+                    window.addEventListener('resize', resize)
+                    window.addEventListener('blur', pause)
+                    window.addEventListener('focus', resume)
+                    init()
+
+                }
+
         function agentLang() {
-            var lang = window.navigator.userLanguage || window.navigator.language;
-            lang = lang.toLowerCase();
-            var lg = "English";
-            if (lang.includes("en")) {
-                lg = "English";
-            }
-            else if (lang.includes("th") != -1) {
-                lg = "Thai";
-            }
-            else if (lang.includes("cn") != -1) {
-                lg = "Chinese";
-            }
-            else {
-                lg = "English";
-            }
-            return lg;
-        }
+                    var lang = window.navigator.userLanguage || window.navigator.language;
+                    lang = lang.toLowerCase();
+                    var lg = "English";
+                    if (lang.includes("en")) {
+                        lg = "English";
+                    }
+                    else if (lang.includes("th") != -1) {
+                        lg = "Thai";
+                    }
+                    else if (lang.includes("cn") != -1) {
+                        lg = "Chinese";
+                    }
+                    else {
+                        lg = "English";
+                    }
+                    return lg;
+                }
 
         function ModalLanguage() {
             $("#modalLanguage").modal();
         }
 
         function Login() {
-            $("#myModalLoad").modal();
-            if ($('#username').val() == "") {
-                document.getElementById("lbAlert").setAttribute("set-lan", "text:missing 'Username' field");
-                SetLan(logLan);
-                $('#modalAlert').modal('show');
-                $("#myModalLoad").modal('hide');
-            }
-            else if ($('#password').val() == "") {
-                document.getElementById("lbAlert").setAttribute("set-lan", "text:missing 'Password' field");
-                SetLan(logLan);
-                $('#modalAlert').modal('show');
-                $("#myModalLoad").modal('hide');
-            }
-            else if ($('#captcha').val() == "") {
-                document.getElementById("lbAlert").setAttribute("set-lan", "text:missing 'Captcha' field");
-                SetLan(logLan);
-                $('#modalAlert').modal('show');
-                $("#myModalLoad").modal('hide');
-            }
-            else {
-                var login = new Object();
-                login.username = $('#username').val();
-                login.password = $('#password').val();
-                login.captcha = $('#captcha').val();
-                login.uuid = uuid;
-                login.ip = ipAddress;
-                $.ajax({
-                    url: apiURL + '/apiRoute/member/agentAuthen',
-                    type: 'POST',
-                    dataType: 'json',
-                    data: login,
-                    success: function (data, textStatus, xhr) {
-                        if (data.code == 0 || data.code == null) {
-                            $.ajax({
-                                url: apiURL + '/apiRoute/member/profile',
-                                type: 'POST',
-                                headers: {
-                                    "Authorization": data.data.accessToken,
-                                    "Content-Type": "application/json"
-                                },
-                                success: function (response) {
-                                    if (response.code == 0 || response.code == null) {
-                                        localStorage.setItem("IP", ipAddress);
-                                        localStorage.setItem("Token", data.data.accessToken);
-                                        localStorage.setItem("Position", response.position);
-                                        localStorage.setItem("isSupport", response.isSupport);
-                                        localStorage.setItem("Language", logLan);
+                    $("#myModalLoad").modal();
+                    if ($('#username').val() == "") {
+                        document.getElementById("lbAlert").setAttribute("set-lan", "text:missing 'Username' field");
+                        SetLan(logLan);
+                        $('#modalAlert').modal('show');
+                        $("#myModalLoad").modal('hide');
+                    }
+                    else if ($('#password').val() == "") {
+                        document.getElementById("lbAlert").setAttribute("set-lan", "text:missing 'Password' field");
+                        SetLan(logLan);
+                        $('#modalAlert').modal('show');
+                        $("#myModalLoad").modal('hide');
+                    }
+                    else if ($('#captcha').val() == "") {
+                        document.getElementById("lbAlert").setAttribute("set-lan", "text:missing 'Captcha' field");
+                        SetLan(logLan);
+                        $('#modalAlert').modal('show');
+                        $("#myModalLoad").modal('hide');
+                    }
+                    else {
+                        var login = new Object();
+                        login.username = $('#username').val();
+                        login.password = $('#password').val();
+                        login.captcha = $('#captcha').val();
+                        login.uuid = uuid;
+                        login.ip = ipAddress;
+                        $.ajax({
+                            url: apiURL + '/apiRoute/member/agentAuthen',
+                            type: 'POST',
+                            dataType: 'json',
+                            data: login,
+                            success: function (data, textStatus, xhr) {
+                                if (data.code == 0 || data.code == null) {
+                                    $.ajax({
+                                        url: apiURL + '/apiRoute/member/profile',
+                                        type: 'POST',
+                                        headers: {
+                                            "Authorization": data.data.accessToken,
+                                            "Content-Type": "application/json"
+                                        },
+                                        success: function (response) {
+                                            if (response.code == 0 || response.code == null) {
+                                                localStorage.setItem("IP", ipAddress);
+                                                localStorage.setItem("Token", data.data.accessToken);
+                                                localStorage.setItem("Position", response.position);
+                                                localStorage.setItem("isSupport", response.isSupport);
+                                                localStorage.setItem("Language", logLan);
 
-                                        if (response.isSupport == true) {
-                                            localStorage.setItem("Status_Account", response.accessPage.access_account);
-                                            localStorage.setItem("Status_Member", response.accessPage.access_member);
-                                            localStorage.setItem("Status_Payment", response.accessPage.access_payment);
-                                            localStorage.setItem("Status_Report", response.accessPage.access_report);
-                                            localStorage.setItem("Status_Stock", response.accessPage.access_stock);
+                                                if (response.isSupport == true) {
+                                                    localStorage.setItem("Status_Account", response.accessPage.access_account);
+                                                    localStorage.setItem("Status_Member", response.accessPage.access_member);
+                                                    localStorage.setItem("Status_Payment", response.accessPage.access_payment);
+                                                    localStorage.setItem("Status_Report", response.accessPage.access_report);
+                                                    localStorage.setItem("Status_Stock", response.accessPage.access_stock);
+                                                }
+
+                                                localStorage.setItem("_ID", response._id);
+                                                window.location.href = "/Menu_Dashboard/dashboard.aspx";
+                                            }
+                                            else {
+                                                document.getElementById('lbAlert').innerHTML = response.msg;
+                                                $('#modalAlert').modal('show');
+                                            }
+
+                                            $("#myModalLoad").modal('hide');
+                                        },
+                                        error: function (xhr, exception) {
+                                            var msg = '';
+                                            if (xhr.status === 0) {
+                                                msg = 'Not connect. Verify Network.';
+                                            } else if (xhr.status == 404) {
+                                                msg = 'Requested page not found. [404]';
+                                            } else if (xhr.status == 500) {
+                                                msg = 'Internal Server Error [500].';
+                                            } else if (exception === 'parsererror') {
+                                                msg = 'Requested JSON parse failed.';
+                                            } else if (exception === 'timeout') {
+                                                msg = 'Time out error.';
+                                            } else if (exception === 'abort') {
+                                                msg = 'Ajax request aborted.';
+                                            } else {
+                                                msg = 'Uncaught Error.\n' + xhr.responseText;
+                                            }
+                                            document.getElementById('lbAlert').innerHTML = msg;
+                                            $("#myModalLoad").modal('hide');
+                                            $('#modalAlert').modal('show');
                                         }
-
-                                        localStorage.setItem("_ID", response._id);
-                                        window.location.href = "/Menu_Dashboard/dashboard.aspx";
-                                    }
-                                    else {
-                                        document.getElementById('lbAlert').innerHTML = response.msg;
-                                        $('#modalAlert').modal('show');
-                                    }
-
+                                    });
+                                }
+                                else if (data.code == 10001) {
+                                    document.getElementById("lbAlert").setAttribute("set-lan", "text:" + data.msg + "");
+                                    SetLan(logLan);
                                     $("#myModalLoad").modal('hide');
-                                },
-                                error: function (xhr, exception) {
-                                    var msg = '';
-                                    if (xhr.status === 0) {
-                                        msg = 'Not connect. Verify Network.';
-                                    } else if (xhr.status == 404) {
-                                        msg = 'Requested page not found. [404]';
-                                    } else if (xhr.status == 500) {
-                                        msg = 'Internal Server Error [500].';
-                                    } else if (exception === 'parsererror') {
-                                        msg = 'Requested JSON parse failed.';
-                                    } else if (exception === 'timeout') {
-                                        msg = 'Time out error.';
-                                    } else if (exception === 'abort') {
-                                        msg = 'Ajax request aborted.';
-                                    } else {
-                                        msg = 'Uncaught Error.\n' + xhr.responseText;
-                                    }
-                                    document.getElementById('lbAlert').innerHTML = msg;
+                                    $('#modalAlert').modal('show');
+                                    $('#captcha').val("");
+                                    captcha();
+                                }
+                                else if (data.code == 998) {
+                                    document.getElementById("lbAlert").setAttribute("set-lan", "text:" + data.msg + "");
+                                    SetLan(logLan);
+                                    $("#myModalLoad").modal('hide');
+                                    $('#modalAlert').modal('show');
+                                    $('#captcha').val("");
+                                    captcha();
+                                }
+                                else {
+                                    document.getElementById('lbAlert').innerHTML = data.msg;
                                     $("#myModalLoad").modal('hide');
                                     $('#modalAlert').modal('show');
                                 }
-                            });
-                        }
-                        else if (data.code == 10001) {
-                            document.getElementById("lbAlert").setAttribute("set-lan", "text:" + data.msg + "");
-                            SetLan(logLan);
-                            $("#myModalLoad").modal('hide');
-                            $('#modalAlert').modal('show');
-                            $('#captcha').val("");
-                            captcha();
-                        }
-                        else if (data.code == 998) {
-                            document.getElementById("lbAlert").setAttribute("set-lan", "text:" + data.msg + "");
-                            SetLan(logLan);
-                            $("#myModalLoad").modal('hide');
-                            $('#modalAlert').modal('show');
-                            $('#captcha').val("");
-                            captcha();
-                        }
-                        else {
-                            document.getElementById('lbAlert').innerHTML = data.msg;
-                            $("#myModalLoad").modal('hide');
-                            $('#modalAlert').modal('show');
-                        }
-                    },
-                    error: function (xhr, exception) {
-                        var msg = '';
-                        if (xhr.status === 0) {
-                            msg = 'Not connect. Verify Network.';
-                        } else if (xhr.status == 404) {
-                            msg = 'Requested page not found. [404]';
-                        } else if (xhr.status == 500) {
-                            msg = 'Internal Server Error [500].';
-                        } else if (exception === 'parsererror') {
-                            msg = 'Requested JSON parse failed.';
-                        } else if (exception === 'timeout') {
-                            msg = 'Time out error.';
-                        } else if (exception === 'abort') {
-                            msg = 'Ajax request aborted.';
-                        } else {
-                            msg = 'Uncaught Error.\n' + xhr.responseText;
-                        }
-                        document.getElementById('lbAlert').innerHTML = msg;
-                        $("#myModalLoad").modal('hide');
-                        $('#modalAlert').modal('show');
+                            },
+                            error: function (xhr, exception) {
+                                var msg = '';
+                                if (xhr.status === 0) {
+                                    msg = 'Not connect. Verify Network.';
+                                } else if (xhr.status == 404) {
+                                    msg = 'Requested page not found. [404]';
+                                } else if (xhr.status == 500) {
+                                    msg = 'Internal Server Error [500].';
+                                } else if (exception === 'parsererror') {
+                                    msg = 'Requested JSON parse failed.';
+                                } else if (exception === 'timeout') {
+                                    msg = 'Time out error.';
+                                } else if (exception === 'abort') {
+                                    msg = 'Ajax request aborted.';
+                                } else {
+                                    msg = 'Uncaught Error.\n' + xhr.responseText;
+                                }
+                                document.getElementById('lbAlert').innerHTML = msg;
+                                $("#myModalLoad").modal('hide');
+                                $('#modalAlert').modal('show');
+                            }
+                        });
                     }
-                });
-            }
-        }
+                }
 
         function captcha() {
-            $.ajax({
-                url: apiURL + '/clientSignature',
-                type: 'GET',
-                dataType: 'json',
-                success: function (data, textStatus, xhr) {
-                    if (data.code == 0 || data.code == null) {
-                        uuid = data.result.uuid;
-                        $("#imgCaptcha").attr("src", apiURL + '/login/captcha/' + data.result.uuid);
-                    }
-                    else {
-                        document.getElementById('lbAlert').innerHTML = data.msg;
-                        $("#myModalLoad").modal('hide');
-                        $('#modalAlert').modal('show');
-                    }
-                },
-                error: function (xhr, exception) {
-                    var msg = '';
-                    if (xhr.status === 0) {
-                        msg = 'Not connect. Verify Network.';
-                    } else if (xhr.status == 404) {
-                        msg = 'Requested page not found. [404]';
-                    } else if (xhr.status == 500) {
-                        msg = 'Internal Server Error [500].';
-                    } else if (exception === 'parsererror') {
-                        msg = 'Requested JSON parse failed.';
-                    } else if (exception === 'timeout') {
-                        msg = 'Time out error.';
-                    } else if (exception === 'abort') {
-                        msg = 'Ajax request aborted.';
-                    } else {
-                        msg = 'Uncaught Error.\n' + xhr.responseText;
-                    }
-                    document.getElementById('lbAlert').innerHTML = msg;
-                    $("#myModalLoad").modal('hide');
-                    $('#modalAlert').modal('show');
+                    $.ajax({
+                        url: apiURL + '/clientSignature',
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function (data, textStatus, xhr) {
+                            if (data.code == 0 || data.code == null) {
+                                uuid = data.result.uuid;
+                                $("#imgCaptcha").attr("src", apiURL + '/login/captcha/' + data.result.uuid);
+                            }
+                            else {
+                                document.getElementById('lbAlert').innerHTML = data.msg;
+                                $("#myModalLoad").modal('hide');
+                                $('#modalAlert').modal('show');
+                            }
+                        },
+                        error: function (xhr, exception) {
+                            var msg = '';
+                            if (xhr.status === 0) {
+                                msg = 'Not connect. Verify Network.';
+                            } else if (xhr.status == 404) {
+                                msg = 'Requested page not found. [404]';
+                            } else if (xhr.status == 500) {
+                                msg = 'Internal Server Error [500].';
+                            } else if (exception === 'parsererror') {
+                                msg = 'Requested JSON parse failed.';
+                            } else if (exception === 'timeout') {
+                                msg = 'Time out error.';
+                            } else if (exception === 'abort') {
+                                msg = 'Ajax request aborted.';
+                            } else {
+                                msg = 'Uncaught Error.\n' + xhr.responseText;
+                            }
+                            document.getElementById('lbAlert').innerHTML = msg;
+                            $("#myModalLoad").modal('hide');
+                            $('#modalAlert').modal('show');
+                        }
+                    });
                 }
-            });
-        }
 
         function ShowModal() {
-            $('#modalAlert').modal('show');
-        }
+                    $('#modalAlert').modal('show');
+                }
 
         function getIPAddress() {
-            var myPeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection;
-            var pc = new myPeerConnection({
-                iceServers: []
-            }),
-            noop = function () { },
-            localIPs = {},
-            ipRegex = /([0-9]{1,3}(\.[0-9]{1,3}){3}|[a-f0-9]{1,4}(:[a-f0-9]{1,4}){7})/g,
-            key;
+                    var myPeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection;
+                    var pc = new myPeerConnection({
+                        iceServers: []
+                    }),
+                    noop = function () { },
+                    localIPs = {},
+                    ipRegex = /([0-9]{1,3}(\.[0-9]{1,3}){3}|[a-f0-9]{1,4}(:[a-f0-9]{1,4}){7})/g,
+                    key;
 
-            function iterateIP(ip) {
-                if (!localIPs[ip]) onNewIP(ip);
-                localIPs[ip] = true;
-            }
+                    function iterateIP(ip) {
+                        if (!localIPs[ip]) onNewIP(ip);
+                        localIPs[ip] = true;
+                    }
 
-            pc.createDataChannel("");
+                    pc.createDataChannel("");
 
-            pc.createOffer(function (sdp) {
-                sdp.sdp.split('\n').forEach(function (line) {
-                    if (line.indexOf('candidate') < 0) return;
-                    line.match(ipRegex).forEach(iterateIP);
-                });
+                    pc.createOffer(function (sdp) {
+                        sdp.sdp.split('\n').forEach(function (line) {
+                            if (line.indexOf('candidate') < 0) return;
+                            line.match(ipRegex).forEach(iterateIP);
+                        });
 
-                pc.setLocalDescription(sdp, noop, noop);
-            }, noop);
+                        pc.setLocalDescription(sdp, noop, noop);
+                    }, noop);
 
-            pc.onicecandidate = function (ice) {
-                if (!ice || !ice.candidate || !ice.candidate.candidate || !ice.candidate.candidate.match(ipRegex)) return;
-                ice.candidate.candidate.match(ipRegex).forEach(iterateIP);
-            };
-        }
+                    pc.onicecandidate = function (ice) {
+                        if (!ice || !ice.candidate || !ice.candidate.candidate || !ice.candidate.candidate.match(ipRegex)) return;
+                        ice.candidate.candidate.match(ipRegex).forEach(iterateIP);
+                    };
+                }
 
         function SetLanguage(ele) {
-            SetLan(ele);
-            if (ele == "Thai") {
-                $("#txtLan").html("ไทย<img src='img/Flag/thailand.png' style='width: 20px; margin-left: .4rem;' />");
-            }
-            else if (ele == "English") {
-                $("#txtLan").html("English<img src='img/Flag/usa.png' style='width: 20px; margin-left: .4rem;' />");
-            }
-            else if (ele == "Chinese") {
-                $("#txtLan").html("中文<img src='img/Flag/china.png' style='width: 20px; margin-left: .4rem;' />");
-            }
+                    SetLan(ele);
+                    if (ele == "Thai") {
+                        $("#txtLan").html("ไทย<img src='img/Flag/thailand.png' style='width: 20px; margin-left: .4rem;' />");
+                    }
+                    else if (ele == "English") {
+                        $("#txtLan").html("English<img src='img/Flag/usa.png' style='width: 20px; margin-left: .4rem;' />");
+                    }
+                    else if (ele == "Chinese") {
+                        $("#txtLan").html("中文<img src='img/Flag/china.png' style='width: 20px; margin-left: .4rem;' />");
+                    }
 
-            logLan = ele;
-            $('#divblock').slideUp();
-        }
+                    logLan = ele;
+                    $('#divblock').slideUp();
+                }
 
         function clsAlphaNoOnly(e) {
-            var regex = new RegExp("^[a-zA-Z0-9@]+$");
-            var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
-            if (regex.test(str)) {
-                return true;
-            }
+                    var regex = new RegExp("^[a-zA-Z0-9@]+$");
+                    var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+                    if (regex.test(str)) {
+                        return true;
+                    }
 
-            e.preventDefault();
-            return false;
-        }
+                    e.preventDefault();
+                    return false;
+                }
     </script>
 </body>
 </html>

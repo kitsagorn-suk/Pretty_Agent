@@ -112,7 +112,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/27/2012 13:00:52</publishTime>
     </File>
     <File Include="bin/Pretty_Gaming.dll">
-      <publishTime>11/18/2021 14:49:02</publishTime>
+      <publishTime>02/02/2022 16:08:20</publishTime>
     </File>
     <File Include="bin/RestSharp.dll">
       <publishTime>09/06/2012 22:37:32</publishTime>
@@ -528,6 +528,15 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="img/Card/QS.png">
       <publishTime>04/20/2020 13:08:26</publishTime>
     </File>
+    <File Include="img/Carnival/christmas.jpg">
+      <publishTime>12/24/2021 17:39:00</publishTime>
+    </File>
+    <File Include="img/Carnival/christmas2.png">
+      <publishTime>12/24/2021 17:47:42</publishTime>
+    </File>
+    <File Include="img/Carnival/valentine.jpg">
+      <publishTime>02/02/2022 16:05:06</publishTime>
+    </File>
     <File Include="img/chart01.jpg">
       <publishTime>03/04/2020 12:55:13</publishTime>
     </File>
@@ -539,6 +548,9 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="img/chart04.jpg">
       <publishTime>03/04/2020 12:55:13</publishTime>
+    </File>
+    <File Include="img/christmas.webp">
+      <publishTime>12/24/2021 17:33:13</publishTime>
     </File>
     <File Include="img/excel_logo.png">
       <publishTime>06/29/2020 15:40:59</publishTime>
@@ -805,7 +817,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/23/2020 14:41:23</publishTime>
     </File>
     <File Include="js/language_Login.js">
-      <publishTime>11/22/2021 14:35:57</publishTime>
+      <publishTime>12/22/2021 21:53:16</publishTime>
     </File>
     <File Include="js/marquee.js">
       <publishTime>05/12/2020 18:10:40</publishTime>
@@ -832,13 +844,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>04/21/2020 15:11:25</publishTime>
     </File>
     <File Include="Login.aspx">
-      <publishTime>11/22/2021 17:47:55</publishTime>
+      <publishTime>02/02/2022 16:03:46</publishTime>
     </File>
     <File Include="Menu_Account/password_change.aspx">
       <publishTime>07/04/2020 00:17:09</publishTime>
     </File>
     <File Include="Menu_Account/profile.aspx">
-      <publishTime>11/22/2021 14:59:14</publishTime>
+      <publishTime>11/23/2021 01:18:07</publishTime>
     </File>
     <File Include="Menu_Dashboard/dashboard.aspx">
       <publishTime>07/04/2020 00:18:49</publishTime>
@@ -904,13 +916,16 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/22/2021 17:44:21</publishTime>
     </File>
     <File Include="Menu_Report/wl_member.aspx">
-      <publishTime>11/17/2021 17:23:28</publishTime>
+      <publishTime>02/02/2022 15:55:48</publishTime>
     </File>
     <File Include="Menu_Report/wl_member_ver1.aspx">
       <publishTime>06/10/2020 01:50:37</publishTime>
     </File>
     <File Include="Menu_Report/wl_mg_member.aspx">
       <publishTime>05/14/2020 14:30:03</publishTime>
+    </File>
+    <File Include="Menu_Report/wl_user.aspx">
+      <publishTime>12/29/2021 14:16:42</publishTime>
     </File>
     <File Include="Menu_SeamlessAPI/recalculate.aspx">
       <publishTime>05/14/2020 14:31:02</publishTime>
@@ -1003,10 +1018,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>04/08/2020 17:14:25</publishTime>
     </File>
     <File Include="Site.Master">
-      <publishTime>11/22/2021 17:47:48</publishTime>
+      <publishTime>02/02/2022 15:51:19</publishTime>
     </File>
     <File Include="Site.Mobile.Master">
-      <publishTime>11/22/2021 17:47:51</publishTime>
+      <publishTime>02/02/2022 15:51:12</publishTime>
     </File>
     <File Include="ViewSwitcher.ascx">
       <publishTime>03/04/2020 12:47:38</publishTime>

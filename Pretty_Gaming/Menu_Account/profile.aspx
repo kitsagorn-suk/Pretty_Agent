@@ -185,52 +185,52 @@
         </div>
         <div class="form-row" id="zoneAPI" style="display: none;">
             <div class="form-group col-5">
-                    <h4 set-lan="text:API"></h4>
-                    <div class="form-group row inputform">
-                        <label for="username" class="col-4 col-form-label" set-lan="text:Key"></label>
-                        <div class="col-7">
-                            <textarea id="key" class="form-control" autocomplete="off" rows="2" readonly></textarea>
-                        </div>
-                        <div class="col-1" style="padding-top: 13px;">
-                            <span toggle="#password" class="toggle-password field-icon" onclick="viewKey()"><i class="far fa-eye" style="margin: auto; padding: 4px; background-color: #ececec; border-radius: 12px;"></i></span>
-                        </div>
+                <h4 set-lan="text:API"></h4>
+                <div class="form-group row inputform">
+                    <label for="username" class="col-4 col-form-label" set-lan="text:Key"></label>
+                    <div class="col-7">
+                        <textarea id="key" class="form-control" autocomplete="off" rows="2" readonly></textarea>
                     </div>
-                    <div class="form-group row inputform callback">
-                        <label for="username" class="col-4 col-form-label" set-lan="text:Callback url servlet"></label>
-                        <div class="col-8">
-                            <input type="text" id="web" class="form-control" autocomplete="off" />
-                            <small class="text-muted form-text" set-lan="text:Example https//www.yourcallback.com/service"></small>
-                        </div>
+                    <div class="col-1" style="padding-top: 13px;">
+                        <span toggle="#password" class="toggle-password field-icon" onclick="viewKey()"><i class="far fa-eye" style="margin: auto; padding: 4px; background-color: #ececec; border-radius: 12px;"></i></span>
                     </div>
-                    <%--<div class="form-group row inputform callback">
+                </div>
+                <div class="form-group row inputform callback">
+                    <label for="username" class="col-4 col-form-label" set-lan="text:Callback url servlet"></label>
+                    <div class="col-8">
+                        <input type="text" id="web" class="form-control" autocomplete="off" />
+                        <small class="text-muted form-text" set-lan="text:Example https//www.yourcallback.com/service"></small>
+                    </div>
+                </div>
+                <%--<div class="form-group row inputform callback">
                         <label for="username" class="col-4 col-form-label" set-lan="text:Callback Dealer Tips"></label>
                         <div class="col-8">
                             <input type="text" id="webDealer" class="form-control" autocomplete="off" />
                             <small class="text-muted form-text" set-lan="text:Example https//www.yourcallback.com/service"></small>
                         </div>
                     </div>--%>
-                    <div class="zoneAddIP">
-                        <div class="zonedivIP">
-                            <div class="form-group row inputform">
-                                <label for="username" class="col-4 col-form-label" set-lan="text:IP"></label>
-                                <div class="col-7">
-                                    <input type="text" class="form-control codeip" autocomplete="off" onkeydown="keyDownNotSpace(event)" />
-                                </div>
-                                <div class="col-1" style="color: red; font-size: 1.5rem; padding-left: 0px;">
-                                    <a class='removeIP'><i class='fa fa-minus-circle' aria-hidden='true'></i></a>
-                                </div>
+                <div class="zoneAddIP">
+                    <div class="zonedivIP">
+                        <div class="form-group row inputform">
+                            <label for="username" class="col-4 col-form-label" set-lan="text:IP"></label>
+                            <div class="col-7">
+                                <input type="text" class="form-control codeip" autocomplete="off" onkeydown="keyDownNotSpace(event)" />
+                            </div>
+                            <div class="col-1" style="color: red; font-size: 1.5rem; padding-left: 0px;">
+                                <a class='removeIP'><i class='fa fa-minus-circle' aria-hidden='true'></i></a>
                             </div>
                         </div>
-                        <div class="form-group row inputform" style="margin-top: -15px;">
-                            <label for="username" class="col-4 col-form-label"></label>
-                            <div class="col-7"><small class="text-muted form-text" set-lan="text:Example 192.168.0.1"></small></div>
-                        </div>
-                        <button class="btn btn-yellow font-weight-bold" onclick="gotoURL();" type="button" style="float: right;" set-lan="text:Click to API Document"></button>
-                        <button class="btn btn-yellow font-weight-bold addIP zonenone" onclick="" type="button" style="float: right; margin-right: 5px;" set-lan="text:Add IP"></button>
                     </div>
+                    <div class="form-group row inputform" style="margin-top: -15px;">
+                        <label for="username" class="col-4 col-form-label"></label>
+                        <div class="col-7"><small class="text-muted form-text" set-lan="text:Example 192.168.0.1"></small></div>
+                    </div>
+                    <button class="btn btn-yellow font-weight-bold" onclick="gotoURL();" type="button" style="float: right;" set-lan="text:Click to API Document"></button>
+                    <button class="btn btn-yellow font-weight-bold addIP zonenone" onclick="" type="button" style="float: right; margin-right: 5px;" set-lan="text:Add IP"></button>
+                </div>
             </div>
             <div class="col-1"></div>
-            <div class="form-group col-5">
+            <div class="form-group col-5" id="settingBacZone">
                 <h4 set-lan="text:Setting Baccarat"></h4>
                 <div class="form-group row inputform">
                     <label for="OriBar" class="col-4 col-form-label" set-lan="text:Original Baccarat"></label>
@@ -445,6 +445,7 @@
     <script>
         var checkPass = false;
         var key = "";
+        var position = "";
         $(document).ready(function () {
             $("#menuAccount , #menuAccount > a").addClass("active");
             $("#menuAccount > div").css("display", "block");
@@ -490,9 +491,10 @@
                 },
                 success: function (data) {
                     if (data.code == null || data.code == 0) {
+                        position = data.position.toLowerCase();
                         if (data.position.toLowerCase() == "agent_api") {
-                            $('#zoneAPI , #btnSaveProfile').css('display', 'initial');
-                            $('.positionType, .betType').css('display', 'flex');
+                            $('#btnSaveProfile').css('display', 'initial');
+                            $('#zoneAPI, .positionType, .betType').css('display', 'flex');
                             $('#Positiontype').val("API");
                             if (data.betType == "API_TRANSFER") {
                                 $('#Bettype').val("Transfer");
@@ -502,16 +504,21 @@
                                 $('#Bettype').val("Seamless");
                             }
 
-                            $("#ddl_OriBar option[value='" + data.allowType.normalBaccarat.toString() + "']").attr("selected", "selected");
-                            $("#ddl_SupBar option[value='" + data.allowType.super6Baccarat.toString() + "']").attr("selected", "selected");
-                            $("#ddl_4Point option[value='" + data.allowType.fourPointBaccarat.toString() + "']").attr("selected", "selected");
-                            $("#ddl_CowCow option[value='" + data.allowType.cowCowBaccarat.toString() + "']").attr("selected", "selected");
-                            $("#ddl_DragonTiger option[value='" + data.allowType.dragonTiger.toString() + "']").attr("selected", "selected");
-                            $("#ddl_Roulete option[value='" + data.allowType.roulette.toString() + "']").attr("selected", "selected");
-                            $("#ddl_Sicbo option[value='" + data.allowType.sicBo.toString() + "']").attr("selected", "selected");
-                            $("#ddl_FanTan option[value='" + data.allowType.thaiFanTan.toString() + "']").attr("selected", "selected");
+                            if (data.allowType) {
+                                $("#ddl_OriBar option[value='" + data.allowType.normalBaccarat.toString() + "']").attr("selected", "selected");
+                                $("#ddl_SupBar option[value='" + data.allowType.super6Baccarat.toString() + "']").attr("selected", "selected");
+                                $("#ddl_4Point option[value='" + data.allowType.fourPointBaccarat.toString() + "']").attr("selected", "selected");
+                                $("#ddl_CowCow option[value='" + data.allowType.cowCowBaccarat.toString() + "']").attr("selected", "selected");
+                                $("#ddl_DragonTiger option[value='" + data.allowType.dragonTiger.toString() + "']").attr("selected", "selected");
+                                $("#ddl_Roulete option[value='" + data.allowType.roulette.toString() + "']").attr("selected", "selected");
+                                $("#ddl_Sicbo option[value='" + data.allowType.sicBo.toString() + "']").attr("selected", "selected");
+                                $("#ddl_FanTan option[value='" + data.allowType.thaiFanTan.toString() + "']").attr("selected", "selected");
 
-                            $("#ddl_FanTan").val(data.allowType.thaiFanTan.toString());
+                                $("#ddl_FanTan").val(data.allowType.thaiFanTan.toString());
+                            }
+                            else {
+                                $('#settingBacZone').css('display', 'none');
+                            }
                         }
 
                         if (data.position.toLowerCase() == "agent_none_api") {
@@ -706,28 +713,30 @@
                 arrIP.push(val);
             }
 
-            var cowCowBaccarat = ($('#ddl_CowCow').val().toLowerCase() === 'true');
-            var dragonTiger = ($('#ddl_DragonTiger').val().toLowerCase() === 'true');
-            var fourPointBaccarat = ($('#ddl_4Point').val().toLowerCase() === 'true');
-            var normalBaccarat = ($('#ddl_OriBar').val().toLowerCase() === 'true');
-            var roulette = ($('#ddl_Roulete').val().toLowerCase() === 'true');
-            var sicBo = ($('#ddl_Sicbo').val().toLowerCase() === 'true');
-            var super6Baccarat = ($('#ddl_SupBar').val().toLowerCase() === 'true');
-            var thaiFanTan = ($('#ddl_FanTan').val().toLowerCase() === 'true');
-
             var dataEdit = new Object();
             dataEdit.ip = arrIP;
             dataEdit.webHookEvents = $('#web').val();
-            dataEdit.allowType = {
-                cowCowBaccarat: cowCowBaccarat,
-                dragonTiger: dragonTiger,
-                fourPointBaccarat: fourPointBaccarat,
-                normalBaccarat: normalBaccarat,
-                roulette: roulette,
-                sicBo: sicBo,
-                super6Baccarat: super6Baccarat,
-                thaiFanTan: thaiFanTan
-            };
+            if (position.toLowerCase() == "agent_api") {
+                var cowCowBaccarat = ($('#ddl_CowCow').val().toLowerCase() === 'true');
+                var dragonTiger = ($('#ddl_DragonTiger').val().toLowerCase() === 'true');
+                var fourPointBaccarat = ($('#ddl_4Point').val().toLowerCase() === 'true');
+                var normalBaccarat = ($('#ddl_OriBar').val().toLowerCase() === 'true');
+                var roulette = ($('#ddl_Roulete').val().toLowerCase() === 'true');
+                var sicBo = ($('#ddl_Sicbo').val().toLowerCase() === 'true');
+                var super6Baccarat = ($('#ddl_SupBar').val().toLowerCase() === 'true');
+                var thaiFanTan = ($('#ddl_FanTan').val().toLowerCase() === 'true');
+
+                dataEdit.allowType = {
+                    cowCowBaccarat: cowCowBaccarat,
+                    dragonTiger: dragonTiger,
+                    fourPointBaccarat: fourPointBaccarat,
+                    normalBaccarat: normalBaccarat,
+                    roulette: roulette,
+                    sicBo: sicBo,
+                    super6Baccarat: super6Baccarat,
+                    thaiFanTan: thaiFanTan
+                };
+            }
             $.ajax({
                 url: apiURL + "/apiRoute/member/setIpAndWebHookEvent",
                 type: 'POST',

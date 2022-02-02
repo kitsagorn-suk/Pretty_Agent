@@ -264,6 +264,9 @@
     <Content Include="img\Card\QD.png" />
     <Content Include="img\Card\QH.png" />
     <Content Include="img\Card\QS.png" />
+    <Content Include="img\Carnival\christmas.jpg" />
+    <Content Include="img\Carnival\christmas2.png" />
+    <Content Include="img\Carnival\valentine.jpg" />
     <Content Include="img\excel_logo.png" />
     <Content Include="img\Flag\china.png" />
     <Content Include="img\Flag\indonesia.png" />
@@ -389,6 +392,7 @@
     <Content Include="Menu_Rate\Rate.aspx" />
     <Content Include="Menu_Report\tip_dealer.aspx" />
     <Content Include="Menu_Report\wl_company.aspx" />
+    <Content Include="Menu_Report\wl_user.aspx" />
     <Content Include="Menu_Report\wl_gameID.aspx" />
     <Content Include="Menu_Report\wl_member_ver1.aspx" />
     <Content Include="Menu_Report\wl_member.aspx" />
@@ -460,6 +464,7 @@
     <Content Include="font\fa5\fa-solid-900.woff" />
     <Content Include="font\fa5\fa-solid-900.woff2" />
     <Content Include="Login.aspx" />
+    <Content Include="img\christmas.webp" />
     <None Include="Properties\PublishProfiles\AgentPretty.pubxml" />
     <Content Include="Scripts\underscore.min.map" />
     <None Include="Web.Debug.config">
@@ -581,6 +586,13 @@
     </Compile>
     <Compile Include="Menu_Report\wl_company.aspx.designer.cs">
       <DependentUpon>wl_company.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Menu_Report\wl_user.aspx.cs">
+      <DependentUpon>wl_user.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Menu_Report\wl_user.aspx.designer.cs">
+      <DependentUpon>wl_user.aspx</DependentUpon>
     </Compile>
     <Compile Include="Menu_Report\wl_gameID.aspx.cs">
       <DependentUpon>wl_gameID.aspx</DependentUpon>

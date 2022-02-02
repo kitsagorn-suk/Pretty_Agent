@@ -1068,6 +1068,9 @@
                                     txtHeadExcel = '货币 : ' + curtxt;
                                 }
 
+                                var arr = data.data.list;
+                                var dataTotal = arr.sort(rankingSorter("turnOverAmt"));
+
                                 htmlData += '<div style="display: flex;"><div class="navCur" style="margin-top: 1rem;"><label style="font-weight: bold;" set-lan="text:Currency_"></label> ' + curtxt + '</div><div style="border-bottom: 33.5px solid #CFA137; border-right: 50px solid transparent;"></div></div>';
 
                                 htmlData += '<section style="margin-top: -2.3rem; float: right;">';
@@ -1082,6 +1085,10 @@
                                 htmlData += "<tr>";
                                 htmlData += "<th rowspan='2' style='width: 2.5%; vertical-align: middle; border-radius: initial !important; background-color: rgb(23, 23, 44); color: #f2e8be; border: 1px #ced4da solid;' set-lan='text:No'></th>";
                                 htmlData += "<th rowspan='2' style='width: 7.5%; vertical-align: middle; text-align: left; padding-left: 5px; background-color: rgb(23, 23, 44); color: #f2e8be; border: 1px #ced4da solid;' set-lan='text:Login name'></th>";
+                                if (dataTotal[0]._id.position != "MEMBER_NONE_API" && dataTotal[0]._id.position != "MEMBER_API") {
+                                    htmlData += "<th rowspan='2' style='width: 4%; vertical-align: middle; text-align: left; padding-left: 5px; background-color: rgb(23, 23, 44); color: #f2e8be; border: 1px #ced4da solid;' set-lan='text:Level'></th>";
+                                }
+
                                 htmlData += "<th rowspan='2' style='width: 6%; vertical-align: middle; text-align: right; padding-right: 5px; background-color: rgb(23, 23, 44); color: #f2e8be; border: 1px #ced4da solid;' set-lan='text:Turnover'></th>";
                                 htmlData += "<th rowspan='2' style='width: 6%; vertical-align: middle; text-align: right; padding-right: 5px; background-color: rgb(23, 23, 44); color: #f2e8be; border: 1px #ced4da solid;' set-lan='text:Valid turn'></th>";
                                 htmlData += "<th rowspan='2' style='width: 4%; vertical-align: middle; text-align: right; padding-right: 5px; background-color: rgb(23, 23, 44); color: #f2e8be; border: 1px #ced4da solid;' set-lan='text:No.Ticket'></th>";
@@ -1113,8 +1120,7 @@
                                 htmlData += "</tr>";
                                 htmlData += '</thead><tbody>';
 
-                                var arr = data.data.list;
-                                var dataTotal = arr.sort(rankingSorter("turnOverAmt"));
+                                
                                 var no = 1;
                                 for (var i = 0; i < dataTotal.length; i++) {
                                     var obj = dataTotal[i];
@@ -1126,6 +1132,20 @@
                                     }
                                     else {
                                         htmlData += "<td><p onclick='GetData2(\"" + obj._id._id + "\" ,[\"" + curtxt + "\"],\"" + startDate + "\", \"" + toDate + "\", \"" + startTime + "\", \"" + toTime + "\", GetData, \"nav\", \"\", \"" + obj._id.position + "\")' class='link overflow ellipsis' title='" + obj._id.username + "'>" + obj._id.username + "</p></td>";
+                                    }
+
+                                    var position = "";
+                                    if (obj._id.position != null && obj._id.position != "") {
+                                        if (obj._id.position.toLowerCase() == "agent_none_api") {
+                                            position = "Agent";
+                                        }
+                                        else if (obj._id.position.toLowerCase() == "agent_api") {
+                                            position = "API";
+                                        }
+                                    }
+
+                                    if (dataTotal[0]._id.position != "MEMBER_NONE_API" && dataTotal[0]._id.position != "MEMBER_API") {
+                                        htmlData += "<td style='text-align: center;'>" + position + "</td>";
                                     }
 
                                     var turnOverAmt = parseFloat(obj.turnOverAmt).toFixed(2);
@@ -1262,8 +1282,13 @@
 
                                 htmlData += '</tbody><tfoot class="rgba-yellow-slight">';
                                 htmlData += "<tr>";
-                                htmlData += "<td style='font-weight: bold; background-color: #f2e8be; border-right: 1px #ced4da solid;'></td>";
-                                htmlData += "<td style='font-weight: bold; background-color: #f2e8be; border-right: 1px #ced4da solid;' set-lan='text:Total'></td>";
+                                if (dataTotal[0]._id.position != "MEMBER_NONE_API" && dataTotal[0]._id.position != "MEMBER_API") {
+                                    htmlData += "<td colspan='3' style='font-weight: bold; background-color: #f2e8be; border-right: 1px #ced4da solid;' set-lan='text:Total'></td>";
+                                }
+                                else {
+                                    htmlData += "<td colspan='2' style='font-weight: bold; background-color: #f2e8be; border-right: 1px #ced4da solid;' set-lan='text:Total'></td>";
+                                }
+
                                 if (Total_turnOverAmt < 0 || Total_turnOverAmt.toString() == "-0.00") {
                                     htmlData += "<td style='font-weight: bold; background-color: #f2e8be; border-right: 1px #ced4da solid; color: red;'>" + Total_turnOverAmt.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
                                 }
@@ -1400,7 +1425,7 @@
                                             afterPreviousOnClick: function (response, pagination) {
                                                 GetData_(NumPage, name, mainID, underID, usersearh);
                                             },
-                                            
+
                                         });
                                     })(curtxt, _id, under_id, ddl_userId);
                                 });
@@ -1469,307 +1494,321 @@
         }
 
         function GetData_(nump, zone, mainID, underID, userSearch) {
-                $("#myModalLoad").modal();
-                var _id = localStorage.getItem("_ID");
-                var dataAdd = new Object();
-                dataAdd.self_uuid = mainID;
-                dataAdd.under_uuid = underID;
-                dataAdd.start_date = $('#startdate').val();
-                dataAdd.end_date = $('#todate').val();
-                dataAdd.start_time = $('#starttime').val();
-                dataAdd.end_time = $('#totime').val();
-                var arrBet = [];
-                $.each($("input[name='chkBet']:checked"), function () {
-                    arrBet.push($(this).val());
-                });
-                dataAdd.type = arrBet;
-                dataAdd.currency = zone;
-                dataAdd.page = nump;
-                dataAdd.size = 100;
-                var curtxt = zone;
-                var startDate = $('#startdate').val();
-                var toDate = $('#todate').val();
-                var startTime = $('#starttime').val();
-                var toTime = $('#totime').val();
-                dataAdd.user_id = userSearch;
+            $("#myModalLoad").modal();
+            var _id = localStorage.getItem("_ID");
+            var dataAdd = new Object();
+            dataAdd.self_uuid = mainID;
+            dataAdd.under_uuid = underID;
+            dataAdd.start_date = $('#startdate').val();
+            dataAdd.end_date = $('#todate').val();
+            dataAdd.start_time = $('#starttime').val();
+            dataAdd.end_time = $('#totime').val();
+            var arrBet = [];
+            $.each($("input[name='chkBet']:checked"), function () {
+                arrBet.push($(this).val());
+            });
+            dataAdd.type = arrBet;
+            dataAdd.currency = zone;
+            dataAdd.page = nump;
+            dataAdd.size = 100;
+            var curtxt = zone;
+            var startDate = $('#startdate').val();
+            var toDate = $('#todate').val();
+            var startTime = $('#starttime').val();
+            var toTime = $('#totime').val();
+            dataAdd.user_id = userSearch;
 
-                $.ajax({
-                    url: apiURL + "/apiRoute/reportRouter/winLoseEs2",
-                    type: 'POST',
-                    dataType: 'json',
-                    data: JSON.stringify(dataAdd),
-                    contentType: 'application/json; charset=utf-8',
-                    success: function (data) {
-                        if (data.code == 0 || data.code == null) {
-                            var dataMenu = data.data.parentList;
-                            var htmlData = "";
+            $.ajax({
+                url: apiURL + "/apiRoute/reportRouter/winLoseEs2",
+                type: 'POST',
+                dataType: 'json',
+                data: JSON.stringify(dataAdd),
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    if (data.code == 0 || data.code == null) {
+                        var dataMenu = data.data.parentList;
+                        var htmlData = "";
 
-                            if (data.data.list.length > 0) {
-                                if (dataMenu[0]._id == _id && dataMenu[0].position == "COMPANY" && dataMenu.length == 1) {
-                                    $("#tb" + zone + " > tbody").html("");
-                                    var arr = data.data.list;
-                                    var dataTotal = arr.sort(rankingSorter("turnOverAmt"));
-                                    var no = 1;
-                                    for (var i = 0; i < dataTotal.length; i++) {
-                                        var obj = dataTotal[i];
-                                        htmlData += "<tr>";
-                                        htmlData += "<td style='text-align: center;'>" + (((nump - 1) * 100) + no) + "</td>";
+                        if (data.data.list.length > 0) {
+                            if (dataMenu[0]._id == _id && dataMenu[0].position == "COMPANY" && dataMenu.length == 1) {
+                                $("#tb" + zone + " > tbody").html("");
+                                var arr = data.data.list;
+                                var dataTotal = arr.sort(rankingSorter("turnOverAmt"));
+                                var no = 1;
+                                for (var i = 0; i < dataTotal.length; i++) {
+                                    var obj = dataTotal[i];
+                                    htmlData += "<tr>";
+                                    htmlData += "<td style='text-align: center;'>" + (((nump - 1) * 100) + no) + "</td>";
 
-                                        if (obj._id.position == "MEMBER_NONE_API" || obj._id.position == "MEMBER_API") {
-                                            htmlData += "<td><p onclick='GetDataTableMember(\"" + obj._id._id + "\" ,\"" + curtxt + "\",\"" + startDate + "\", \"" + toDate + "\", \"" + startTime + "\", \"" + toTime + "\")' class='link overflowlg ellipsis' title='" + obj._id.username + "'>" + obj._id.username + "</p></td>";
-                                        }
-                                        else {
-                                            htmlData += "<td><p onclick='GetData2(\"" + obj._id._id + "\" ,[\"" + curtxt + "\"],\"" + startDate + "\", \"" + toDate + "\", \"" + startTime + "\", \"" + toTime + "\", GetData, \"nav\", \"\", \"" + obj._id.position + "\")' class='link overflowlg ellipsis' title='" + obj._id.username + "'>" + obj._id.username + "</p></td>";
-                                        }
-
-                                        var turnOverAmt = parseFloat(obj.turnOverAmt).toFixed(2);
-                                        if (obj.turnOverAmt < 0 || obj.turnOverAmt.toString() == "-0.00") {
-                                            htmlData += "<td class='alignright' style='color: red;'>" + turnOverAmt.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
-                                        }
-                                        else {
-                                            htmlData += "<td class='alignright'>" + turnOverAmt.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
-                                        }
-
-                                        var validAmt = parseFloat(obj.validAmt).toFixed(2);
-                                        if (obj.validAmt < 0 || obj.validAmt.toString() == "-0.00") {
-                                            htmlData += "<td class='alignright' style='color: red;'>" + validAmt.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
-                                        }
-                                        else {
-                                            htmlData += "<td class='alignright'>" + validAmt.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
-                                        }
-
-                                        htmlData += "<td class='alignright'>" + obj.countTicket.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
-
-                                        var grossCom = parseFloat(obj.grossCom).toFixed(2);
-                                        if (obj.grossCom < 0 || obj.grossCom.toString() == "-0.00") {
-                                            htmlData += "<td class='alignright' style='color: red;'>" + grossCom.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
-                                        }
-                                        else {
-                                            htmlData += "<td class='alignright'>" + grossCom.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
-                                        }
-
-                                        var winLose = parseFloat(obj.winLose).toFixed(2);
-                                        if (obj.winLose < 0 || obj.winLose.toString() == "-0.00") {
-                                            htmlData += "<td class='alignright' style='color: red;'>" + winLose.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
-                                        }
-                                        else {
-                                            htmlData += "<td class='alignright'>" + winLose.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
-                                        }
-
-                                        var winLoseTips = parseFloat(obj.winLoseTips).toFixed(2);
-                                        if (obj.winLoseTips < 0 || obj.winLoseTips.toString() == "-0.00") {
-                                            htmlData += "<td class='alignright' style='color: red;'>" + winLoseTips.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
-                                        }
-                                        else {
-                                            htmlData += "<td class='alignright'>" + winLoseTips.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
-                                        }
-
-                                        var ptTotalBet = parseFloat(obj.ptTotalBet).toFixed(2);
-                                        if (obj.ptTotalBet < 0 || obj.ptTotalBet.toString() == "-0.00") {
-                                            htmlData += "<td class='alignright' style='color: red;'>" + ptTotalBet.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
-                                        }
-                                        else {
-                                            htmlData += "<td class='alignright'>" + ptTotalBet.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
-                                        }
-
-                                        var ptPayoutCom = parseFloat(obj.ptPayoutCom).toFixed(2);
-                                        if (obj.ptPayoutCom < 0 || obj.ptPayoutCom.toString() == "-0.00") {
-                                            htmlData += "<td class='alignright' style='color: red;'>" + ptPayoutCom.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
-                                        }
-                                        else {
-                                            htmlData += "<td class='alignright'>" + ptPayoutCom.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
-                                        }
-
-                                        var ptPayoutTotal = parseFloat(obj.ptPayoutTotal).toFixed(2);
-                                        if (obj.ptPayoutTotal < 0 || obj.ptPayoutTotal.toString() == "-0.00") {
-                                            htmlData += "<td class='alignright' style='color: red;'>" + ptPayoutTotal.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
-                                        }
-                                        else {
-                                            htmlData += "<td class='alignright'>" + ptPayoutTotal.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
-                                        }
-
-                                        htmlData += "</tr>";
-                                        no++;
+                                    if (obj._id.position == "MEMBER_NONE_API" || obj._id.position == "MEMBER_API") {
+                                        htmlData += "<td><p onclick='GetDataTableMember(\"" + obj._id._id + "\" ,\"" + curtxt + "\",\"" + startDate + "\", \"" + toDate + "\", \"" + startTime + "\", \"" + toTime + "\")' class='link overflowlg ellipsis' title='" + obj._id.username + "'>" + obj._id.username + "</p></td>";
+                                    }
+                                    else {
+                                        htmlData += "<td><p onclick='GetData2(\"" + obj._id._id + "\" ,[\"" + curtxt + "\"],\"" + startDate + "\", \"" + toDate + "\", \"" + startTime + "\", \"" + toTime + "\", GetData, \"nav\", \"\", \"" + obj._id.position + "\")' class='link overflowlg ellipsis' title='" + obj._id.username + "'>" + obj._id.username + "</p></td>";
                                     }
 
-                                    htmlData += '</tbody>';
-                                    $("#tb" + zone + "").append(htmlData);
-                                }
-                                else {
-                                    $("#tb2" + zone + " > tbody").html("");
-                                    var arr = data.data.list;
-                                    var dataTotal = arr.sort(rankingSorter("turnOverAmt"));
-                                    var no = 1;
-                                    for (var i = 0; i < dataTotal.length; i++) {
-                                        var obj = dataTotal[i];
-                                        htmlData += "<tr>";
-                                        htmlData += "<td style='text-align: center;'>" + (((nump - 1) * 100) + no) + "</td>";
-
-                                        if (obj._id.position == "MEMBER_NONE_API" || obj._id.position == "MEMBER_API") {
-                                            htmlData += "<td><p onclick='GetDataTableMember(\"" + obj._id._id + "\" ,\"" + curtxt + "\",\"" + startDate + "\", \"" + toDate + "\", \"" + startTime + "\", \"" + toTime + "\")' class='link overflow ellipsis' title='" + obj._id.username + "'>" + obj._id.username + "</p></td>";
-                                        }
-                                        else {
-                                            htmlData += "<td><p onclick='GetData2(\"" + obj._id._id + "\" ,[\"" + curtxt + "\"],\"" + startDate + "\", \"" + toDate + "\", \"" + startTime + "\", \"" + toTime + "\", GetData, \"nav\", \"\", \"" + obj._id.position + "\")' class='link overflow ellipsis' title='" + obj._id.username + "'>" + obj._id.username + "</p></td>";
-                                        }
-
-                                        var turnOverAmt = parseFloat(obj.turnOverAmt).toFixed(2);
-                                        if (obj.turnOverAmt < 0 || obj.turnOverAmt.toString() == "-0.00") {
-                                            htmlData += "<td class='alignright' style='color: red;'>" + turnOverAmt.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
-                                        }
-                                        else {
-                                            htmlData += "<td class='alignright'>" + turnOverAmt.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
-                                        }
-
-                                        var validAmt = parseFloat(obj.validAmt).toFixed(2);
-                                        if (obj.validAmt < 0 || obj.validAmt.toString() == "-0.00") {
-                                            htmlData += "<td class='alignright' style='color: red;'>" + validAmt.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
-                                        }
-                                        else {
-                                            htmlData += "<td class='alignright'>" + validAmt.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
-                                        }
-
-                                        htmlData += "<td class='alignright'>" + obj.countTicket.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
-
-                                        var grossCom = parseFloat(obj.grossCom).toFixed(2);
-                                        if (obj.grossCom < 0 || obj.grossCom.toString() == "-0.00") {
-                                            htmlData += "<td class='alignright' style='color: red;'>" + grossCom.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
-                                        }
-                                        else {
-                                            htmlData += "<td class='alignright'>" + grossCom.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
-                                        }
-
-                                        var winLose = parseFloat(obj.winLose).toFixed(2);
-                                        if (obj.winLose < 0 || obj.winLose.toString() == "-0.00") {
-                                            htmlData += "<td class='alignright' style='color: red;'>" + winLose.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
-                                        }
-                                        else {
-                                            htmlData += "<td class='alignright'>" + winLose.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
-                                        }
-
-                                        var winLoseTips = parseFloat(obj.winLoseTips).toFixed(2);
-                                        if (obj.winLoseTips < 0 || obj.winLoseTips.toString() == "-0.00") {
-                                            htmlData += "<td class='alignright' style='color: red;'>" + winLoseTips.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
-                                        }
-                                        else {
-                                            htmlData += "<td class='alignright'>" + winLoseTips.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
-                                        }
-
-                                        var memberTotalBet = parseFloat(obj.memberTotalBet).toFixed(2);
-                                        if (obj.memberTotalBet < 0 || obj.memberTotalBet.toString() == "-0.00") {
-                                            htmlData += "<td class='alignright' style='color: red; background-color: #fff9e06b; border: 1px #ced4da solid;'>" + memberTotalBet.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
-                                        }
-                                        else {
-                                            htmlData += "<td class='alignright' style='background-color: #fff9e06b; border: 1px #ced4da solid;'>" + memberTotalBet.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
-                                        }
-
-                                        var memberPayoutCom = parseFloat(obj.memberPayoutCom).toFixed(2);
-                                        if (obj.memberPayoutCom < 0 || obj.memberPayoutCom.toString() == "-0.00") {
-                                            htmlData += "<td class='alignright' style='color: red; background-color: #fff9e06b; border: 1px #ced4da solid;'>" + memberPayoutCom.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
-                                        }
-                                        else {
-                                            htmlData += "<td class='alignright' style='background-color: #fff9e06b; border: 1px #ced4da solid;'>" + memberPayoutCom.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
-                                        }
-
-                                        var memberPayoutTotal = parseFloat(obj.memberPayoutTotal).toFixed(2);
-                                        if (obj.memberPayoutTotal < 0 || obj.memberPayoutTotal.toString() == "-0.00") {
-                                            htmlData += "<td class='alignright' style='color: red; background-color: #fff9e06b; border: 1px #ced4da solid;'>" + memberPayoutTotal.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
-                                        }
-                                        else {
-                                            htmlData += "<td class='alignright' style='background-color: #fff9e06b; border: 1px #ced4da solid;'>" + memberPayoutTotal.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
-                                        }
-
-                                        var ptTotalBet = parseFloat(obj.ptTotalBet).toFixed(2);
-                                        if (obj.ptTotalBet < 0 || obj.ptTotalBet.toString() == "-0.00") {
-                                            htmlData += "<td class='alignright' style='color: red; background-color: #fcea9e75; border: 1px #ced4da solid;'>" + ptTotalBet.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
-                                        }
-                                        else {
-                                            htmlData += "<td class='alignright' style='background-color: #fcea9e75; border: 1px #ced4da solid;'>" + ptTotalBet.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
-                                        }
-
-                                        var ptPayoutCom = parseFloat(obj.ptPayoutCom).toFixed(2);
-                                        if (obj.ptPayoutCom < 0 || obj.ptPayoutCom.toString() == "-0.00") {
-                                            htmlData += "<td class='alignright' style='color: red; background-color: #fcea9e75; border: 1px #ced4da solid;'>" + ptPayoutCom.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
-                                        }
-                                        else {
-                                            htmlData += "<td class='alignright' style='background-color: #fcea9e75; border: 1px #ced4da solid;'>" + ptPayoutCom.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
-                                        }
-
-                                        var ptPayoutTotal = parseFloat(obj.ptPayoutTotal).toFixed(2);
-                                        if (obj.ptPayoutTotal < 0 || obj.ptPayoutTotal.toString() == "-0.00") {
-                                            htmlData += "<td class='alignright' style='color: red; background-color: #fcea9e75; border: 1px #ced4da solid;'>" + ptPayoutTotal.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
-                                        }
-                                        else {
-                                            htmlData += "<td class='alignright' style='background-color: #fcea9e75; border: 1px #ced4da solid;'>" + ptPayoutTotal.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
-                                        }
-
-                                        var comTotalBet = parseFloat(obj.comTotalBet).toFixed(2);
-                                        if (obj.comTotalBet < 0 || obj.comTotalBet.toString() == "-0.00") {
-                                            htmlData += "<td class='alignright' style='color: red; background-color: #ffd06373; border: 1px #ced4da solid;'>" + comTotalBet.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
-                                        }
-                                        else {
-                                            htmlData += "<td class='alignright' style='background-color: #ffd06373; border: 1px #ced4da solid;'>" + comTotalBet.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
-                                        }
-
-                                        var comPayoutCom = parseFloat(obj.comPayoutCom).toFixed(2);
-                                        if (obj.comPayoutCom < 0 || obj.comPayoutCom.toString() == "-0.00") {
-                                            htmlData += "<td class='alignright' style='color: red; background-color: #ffd06373; border: 1px #ced4da solid;'>" + comPayoutCom.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
-                                        }
-                                        else {
-                                            htmlData += "<td class='alignright' style='background-color: #ffd06373; border: 1px #ced4da solid;'>" + comPayoutCom.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
-                                        }
-
-                                        var comPayoutTotal = parseFloat(obj.comPayoutTotal).toFixed(2);
-                                        if (obj.comPayoutTotal < 0 || obj.comPayoutTotal.toString() == "-0.00") {
-                                            htmlData += "<td class='alignright' style='color: red; background-color: #ffd06373; border: 1px #ced4da solid;'>" + comPayoutTotal.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
-                                        }
-                                        else {
-                                            htmlData += "<td class='alignright' style='background-color: #ffd06373; border: 1px #ced4da solid;'>" + comPayoutTotal.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
-                                        }
-                                        htmlData += "</tr>";
-                                        no++;
+                                    var turnOverAmt = parseFloat(obj.turnOverAmt).toFixed(2);
+                                    if (obj.turnOverAmt < 0 || obj.turnOverAmt.toString() == "-0.00") {
+                                        htmlData += "<td class='alignright' style='color: red;'>" + turnOverAmt.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
+                                    }
+                                    else {
+                                        htmlData += "<td class='alignright'>" + turnOverAmt.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
                                     }
 
-                                    htmlData += '</tbody>';
-                                    $("#tb2" + zone + "").append(htmlData);
+                                    var validAmt = parseFloat(obj.validAmt).toFixed(2);
+                                    if (obj.validAmt < 0 || obj.validAmt.toString() == "-0.00") {
+                                        htmlData += "<td class='alignright' style='color: red;'>" + validAmt.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
+                                    }
+                                    else {
+                                        htmlData += "<td class='alignright'>" + validAmt.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
+                                    }
+
+                                    htmlData += "<td class='alignright'>" + obj.countTicket.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
+
+                                    var grossCom = parseFloat(obj.grossCom).toFixed(2);
+                                    if (obj.grossCom < 0 || obj.grossCom.toString() == "-0.00") {
+                                        htmlData += "<td class='alignright' style='color: red;'>" + grossCom.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
+                                    }
+                                    else {
+                                        htmlData += "<td class='alignright'>" + grossCom.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
+                                    }
+
+                                    var winLose = parseFloat(obj.winLose).toFixed(2);
+                                    if (obj.winLose < 0 || obj.winLose.toString() == "-0.00") {
+                                        htmlData += "<td class='alignright' style='color: red;'>" + winLose.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
+                                    }
+                                    else {
+                                        htmlData += "<td class='alignright'>" + winLose.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
+                                    }
+
+                                    var winLoseTips = parseFloat(obj.winLoseTips).toFixed(2);
+                                    if (obj.winLoseTips < 0 || obj.winLoseTips.toString() == "-0.00") {
+                                        htmlData += "<td class='alignright' style='color: red;'>" + winLoseTips.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
+                                    }
+                                    else {
+                                        htmlData += "<td class='alignright'>" + winLoseTips.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
+                                    }
+
+                                    var ptTotalBet = parseFloat(obj.ptTotalBet).toFixed(2);
+                                    if (obj.ptTotalBet < 0 || obj.ptTotalBet.toString() == "-0.00") {
+                                        htmlData += "<td class='alignright' style='color: red;'>" + ptTotalBet.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
+                                    }
+                                    else {
+                                        htmlData += "<td class='alignright'>" + ptTotalBet.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
+                                    }
+
+                                    var ptPayoutCom = parseFloat(obj.ptPayoutCom).toFixed(2);
+                                    if (obj.ptPayoutCom < 0 || obj.ptPayoutCom.toString() == "-0.00") {
+                                        htmlData += "<td class='alignright' style='color: red;'>" + ptPayoutCom.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
+                                    }
+                                    else {
+                                        htmlData += "<td class='alignright'>" + ptPayoutCom.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
+                                    }
+
+                                    var ptPayoutTotal = parseFloat(obj.ptPayoutTotal).toFixed(2);
+                                    if (obj.ptPayoutTotal < 0 || obj.ptPayoutTotal.toString() == "-0.00") {
+                                        htmlData += "<td class='alignright' style='color: red;'>" + ptPayoutTotal.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
+                                    }
+                                    else {
+                                        htmlData += "<td class='alignright'>" + ptPayoutTotal.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
+                                    }
+
+                                    htmlData += "</tr>";
+                                    no++;
                                 }
+
+                                htmlData += '</tbody>';
+                                $("#tb" + zone + "").append(htmlData);
                             }
-                            SetLan(localStorage.getItem("Language"));
-                            $("#myModalLoad").modal('hide');
+                            else {
+                                $("#tb2" + zone + " > tbody").html("");
+                                var arr = data.data.list;
+                                var dataTotal = arr.sort(rankingSorter("turnOverAmt"));
+                                var no = 1;
+                                for (var i = 0; i < dataTotal.length; i++) {
+                                    var obj = dataTotal[i];
+                                    htmlData += "<tr>";
+                                    htmlData += "<td style='text-align: center;'>" + (((nump - 1) * 100) + no) + "</td>";
+
+                                    if (obj._id.position == "MEMBER_NONE_API" || obj._id.position == "MEMBER_API") {
+                                        htmlData += "<td><p onclick='GetDataTableMember(\"" + obj._id._id + "\" ,\"" + curtxt + "\",\"" + startDate + "\", \"" + toDate + "\", \"" + startTime + "\", \"" + toTime + "\")' class='link overflow ellipsis' title='" + obj._id.username + "'>" + obj._id.username + "</p></td>";
+                                    }
+                                    else {
+                                        htmlData += "<td><p onclick='GetData2(\"" + obj._id._id + "\" ,[\"" + curtxt + "\"],\"" + startDate + "\", \"" + toDate + "\", \"" + startTime + "\", \"" + toTime + "\", GetData, \"nav\", \"\", \"" + obj._id.position + "\")' class='link overflow ellipsis' title='" + obj._id.username + "'>" + obj._id.username + "</p></td>";
+                                    }
+
+                                    var position = "";
+                                    if (obj._id.position != null && obj._id.position != "") {
+                                        if (obj._id.position.toLowerCase() == "agent_none_api") {
+                                            position = "Agent";
+                                        }
+                                        else if (obj._id.position.toLowerCase() == "agent_api") {
+                                            position = "API";
+                                        }
+                                    }
+
+                                    if (dataTotal[0]._id.position != "MEMBER_NONE_API" && dataTotal[0]._id.position != "MEMBER_API") {
+                                        htmlData += "<td style='text-align: center;'>" + position + "</td>";
+                                    }
+
+                                    var turnOverAmt = parseFloat(obj.turnOverAmt).toFixed(2);
+                                    if (obj.turnOverAmt < 0 || obj.turnOverAmt.toString() == "-0.00") {
+                                        htmlData += "<td class='alignright' style='color: red;'>" + turnOverAmt.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
+                                    }
+                                    else {
+                                        htmlData += "<td class='alignright'>" + turnOverAmt.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
+                                    }
+
+                                    var validAmt = parseFloat(obj.validAmt).toFixed(2);
+                                    if (obj.validAmt < 0 || obj.validAmt.toString() == "-0.00") {
+                                        htmlData += "<td class='alignright' style='color: red;'>" + validAmt.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
+                                    }
+                                    else {
+                                        htmlData += "<td class='alignright'>" + validAmt.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
+                                    }
+
+                                    htmlData += "<td class='alignright'>" + obj.countTicket.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
+
+                                    var grossCom = parseFloat(obj.grossCom).toFixed(2);
+                                    if (obj.grossCom < 0 || obj.grossCom.toString() == "-0.00") {
+                                        htmlData += "<td class='alignright' style='color: red;'>" + grossCom.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
+                                    }
+                                    else {
+                                        htmlData += "<td class='alignright'>" + grossCom.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
+                                    }
+
+                                    var winLose = parseFloat(obj.winLose).toFixed(2);
+                                    if (obj.winLose < 0 || obj.winLose.toString() == "-0.00") {
+                                        htmlData += "<td class='alignright' style='color: red;'>" + winLose.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
+                                    }
+                                    else {
+                                        htmlData += "<td class='alignright'>" + winLose.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
+                                    }
+
+                                    var winLoseTips = parseFloat(obj.winLoseTips).toFixed(2);
+                                    if (obj.winLoseTips < 0 || obj.winLoseTips.toString() == "-0.00") {
+                                        htmlData += "<td class='alignright' style='color: red;'>" + winLoseTips.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
+                                    }
+                                    else {
+                                        htmlData += "<td class='alignright'>" + winLoseTips.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
+                                    }
+
+                                    var memberTotalBet = parseFloat(obj.memberTotalBet).toFixed(2);
+                                    if (obj.memberTotalBet < 0 || obj.memberTotalBet.toString() == "-0.00") {
+                                        htmlData += "<td class='alignright' style='color: red; background-color: #fff9e06b; border: 1px #ced4da solid;'>" + memberTotalBet.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
+                                    }
+                                    else {
+                                        htmlData += "<td class='alignright' style='background-color: #fff9e06b; border: 1px #ced4da solid;'>" + memberTotalBet.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
+                                    }
+
+                                    var memberPayoutCom = parseFloat(obj.memberPayoutCom).toFixed(2);
+                                    if (obj.memberPayoutCom < 0 || obj.memberPayoutCom.toString() == "-0.00") {
+                                        htmlData += "<td class='alignright' style='color: red; background-color: #fff9e06b; border: 1px #ced4da solid;'>" + memberPayoutCom.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
+                                    }
+                                    else {
+                                        htmlData += "<td class='alignright' style='background-color: #fff9e06b; border: 1px #ced4da solid;'>" + memberPayoutCom.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
+                                    }
+
+                                    var memberPayoutTotal = parseFloat(obj.memberPayoutTotal).toFixed(2);
+                                    if (obj.memberPayoutTotal < 0 || obj.memberPayoutTotal.toString() == "-0.00") {
+                                        htmlData += "<td class='alignright' style='color: red; background-color: #fff9e06b; border: 1px #ced4da solid;'>" + memberPayoutTotal.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
+                                    }
+                                    else {
+                                        htmlData += "<td class='alignright' style='background-color: #fff9e06b; border: 1px #ced4da solid;'>" + memberPayoutTotal.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
+                                    }
+
+                                    var ptTotalBet = parseFloat(obj.ptTotalBet).toFixed(2);
+                                    if (obj.ptTotalBet < 0 || obj.ptTotalBet.toString() == "-0.00") {
+                                        htmlData += "<td class='alignright' style='color: red; background-color: #fcea9e75; border: 1px #ced4da solid;'>" + ptTotalBet.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
+                                    }
+                                    else {
+                                        htmlData += "<td class='alignright' style='background-color: #fcea9e75; border: 1px #ced4da solid;'>" + ptTotalBet.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
+                                    }
+
+                                    var ptPayoutCom = parseFloat(obj.ptPayoutCom).toFixed(2);
+                                    if (obj.ptPayoutCom < 0 || obj.ptPayoutCom.toString() == "-0.00") {
+                                        htmlData += "<td class='alignright' style='color: red; background-color: #fcea9e75; border: 1px #ced4da solid;'>" + ptPayoutCom.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
+                                    }
+                                    else {
+                                        htmlData += "<td class='alignright' style='background-color: #fcea9e75; border: 1px #ced4da solid;'>" + ptPayoutCom.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
+                                    }
+
+                                    var ptPayoutTotal = parseFloat(obj.ptPayoutTotal).toFixed(2);
+                                    if (obj.ptPayoutTotal < 0 || obj.ptPayoutTotal.toString() == "-0.00") {
+                                        htmlData += "<td class='alignright' style='color: red; background-color: #fcea9e75; border: 1px #ced4da solid;'>" + ptPayoutTotal.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
+                                    }
+                                    else {
+                                        htmlData += "<td class='alignright' style='background-color: #fcea9e75; border: 1px #ced4da solid;'>" + ptPayoutTotal.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
+                                    }
+
+                                    var comTotalBet = parseFloat(obj.comTotalBet).toFixed(2);
+                                    if (obj.comTotalBet < 0 || obj.comTotalBet.toString() == "-0.00") {
+                                        htmlData += "<td class='alignright' style='color: red; background-color: #ffd06373; border: 1px #ced4da solid;'>" + comTotalBet.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
+                                    }
+                                    else {
+                                        htmlData += "<td class='alignright' style='background-color: #ffd06373; border: 1px #ced4da solid;'>" + comTotalBet.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
+                                    }
+
+                                    var comPayoutCom = parseFloat(obj.comPayoutCom).toFixed(2);
+                                    if (obj.comPayoutCom < 0 || obj.comPayoutCom.toString() == "-0.00") {
+                                        htmlData += "<td class='alignright' style='color: red; background-color: #ffd06373; border: 1px #ced4da solid;'>" + comPayoutCom.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
+                                    }
+                                    else {
+                                        htmlData += "<td class='alignright' style='background-color: #ffd06373; border: 1px #ced4da solid;'>" + comPayoutCom.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
+                                    }
+
+                                    var comPayoutTotal = parseFloat(obj.comPayoutTotal).toFixed(2);
+                                    if (obj.comPayoutTotal < 0 || obj.comPayoutTotal.toString() == "-0.00") {
+                                        htmlData += "<td class='alignright' style='color: red; background-color: #ffd06373; border: 1px #ced4da solid;'>" + comPayoutTotal.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
+                                    }
+                                    else {
+                                        htmlData += "<td class='alignright' style='background-color: #ffd06373; border: 1px #ced4da solid;'>" + comPayoutTotal.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + "</td>";
+                                    }
+                                    htmlData += "</tr>";
+                                    no++;
+                                }
+
+                                htmlData += '</tbody>';
+                                $("#tb2" + zone + "").append(htmlData);
+                            }
                         }
-                        else if (data.code == 71017) {
-                            document.getElementById("lbAlert").setAttribute("set-lan", "text:Can't load report, because you refresh more than 30 times.");
-                            SetLan(localStorage.getItem("Language"));
-                            $("#myModalLoad").modal('hide');
-                            $('#modalAlert').modal('show');
-                        }
-                        else {
-                            document.getElementById('lbAlert').innerHTML = data.msg;
-                            $("#myModalLoad").modal('hide');
-                            $('#modalAlert').modal('show');
-                        }
-                    },
-                    error: function (xhr, exception) {
-                        var msg = '';
-                        if (xhr.status === 0) {
-                            msg = 'Not connect. Verify Network.';
-                        } else if (xhr.status == 404) {
-                            msg = 'Requested page not found. [404]';
-                        } else if (xhr.status == 500) {
-                            msg = 'Internal Server Error [500].';
-                        } else if (exception === 'parsererror') {
-                            msg = 'Requested JSON parse failed.';
-                        } else if (exception === 'timeout') {
-                            msg = 'Time out error.';
-                        } else if (exception === 'abort') {
-                            msg = 'Ajax request aborted.';
-                        } else {
-                            msg = 'Uncaught Error.\n' + xhr.responseText;
-                        }
-                        document.getElementById('lbAlert').innerHTML = msg;
+                        SetLan(localStorage.getItem("Language"));
+                        $("#myModalLoad").modal('hide');
+                    }
+                    else if (data.code == 71017) {
+                        document.getElementById("lbAlert").setAttribute("set-lan", "text:Can't load report, because you refresh more than 30 times.");
+                        SetLan(localStorage.getItem("Language"));
                         $("#myModalLoad").modal('hide');
                         $('#modalAlert').modal('show');
                     }
-                });
+                    else {
+                        document.getElementById('lbAlert').innerHTML = data.msg;
+                        $("#myModalLoad").modal('hide');
+                        $('#modalAlert').modal('show');
+                    }
+                },
+                error: function (xhr, exception) {
+                    var msg = '';
+                    if (xhr.status === 0) {
+                        msg = 'Not connect. Verify Network.';
+                    } else if (xhr.status == 404) {
+                        msg = 'Requested page not found. [404]';
+                    } else if (xhr.status == 500) {
+                        msg = 'Internal Server Error [500].';
+                    } else if (exception === 'parsererror') {
+                        msg = 'Requested JSON parse failed.';
+                    } else if (exception === 'timeout') {
+                        msg = 'Time out error.';
+                    } else if (exception === 'abort') {
+                        msg = 'Ajax request aborted.';
+                    } else {
+                        msg = 'Uncaught Error.\n' + xhr.responseText;
+                    }
+                    document.getElementById('lbAlert').innerHTML = msg;
+                    $("#myModalLoad").modal('hide');
+                    $('#modalAlert').modal('show');
+                }
+            });
         }
 
         function GetData2(var1, var2, startD, toD, startT, toT, callback, nav, event, position) {
